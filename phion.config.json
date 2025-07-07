@@ -1,0 +1,11 @@
+{
+  "projectId": "9e7e26e5-abce-4537-8b0a-25a13cf75025",
+  "wsUrl": "wss://api.phion.dev",
+  "debug": false,
+  "autoStartOnNewProject": true,
+  "toolbar": {
+    "enabled": true,
+    "position": "top",
+    "autoOpen": true
+  }
+}
