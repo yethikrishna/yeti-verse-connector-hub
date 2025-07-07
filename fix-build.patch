@@ -1,0 +1,53 @@
+From 330f0f5b070c9b09b32c51cc1dde3f29cdc062aa Mon Sep 17 00:00:00 2001
+From: openhands <openhands@all-hands.dev>
+Date: Mon, 7 Jul 2025 11:48:26 +0000
+Subject: [PATCH] Fix build issues by updating paths to use Yeti-AI directory
+ structure
+
+---
+ index.html     |  2 +-
+ vite.config.js | 12 ++++++++++--
+ 2 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/index.html b/index.html
+index a1e9a5a..ed370ba 100644
+--- a/index.html
++++ b/index.html
+@@ -10,7 +10,7 @@
+ 
+     <body>
+       <div id="root"></div>
+-      <script type="module" src="/src/main.tsx"></script>
++      <script type="module" src="/Yeti-AI/src/main.tsx"></script>
+     </body>
+ 
+   </html>
+\ No newline at end of file
+diff --git a/vite.config.js b/vite.config.js
+index fca2bc2..e10023f 100644
+--- a/vite.config.js
++++ b/vite.config.js
+@@ -8,8 +8,8 @@ export default defineConfig({
+   plugins: [react(), phionPlugin()],
+   resolve: {
+     alias: {
+-      "@": path.resolve(__dirname, "./src"),
+-      "/src/": path.resolve(__dirname, "./src/"),
++      "@": path.resolve(__dirname, "./Yeti-AI/src"),
++      "/src/": path.resolve(__dirname, "./Yeti-AI/src/"),
+     },
+     extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json"],
+   },
+@@ -23,4 +23,12 @@ export default defineConfig({
+       },
+     },
+   },
++  server: {
++    host: true,
++    port: 5173,
++    cors: true,
++    headers: {
++      "Access-Control-Allow-Origin": "*",
++    },
++  },
+ })
