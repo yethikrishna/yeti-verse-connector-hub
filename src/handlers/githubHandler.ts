@@ -1,5 +1,7 @@
 import { ConnectionConfig } from "@/types/platform";
 import SecureStorage from '@/lib/security/SecureStorage';
+import { IPlatformHandler, BasePlatformHandler } from '@/types/platformHandler';
+import { IMcpRequest, IMcpResponse } from '@/lib/mcp/IMcpServer';
 const secureStorage = SecureStorage.getInstance();
 
 interface GitHubRepository {
@@ -63,7 +65,7 @@ interface GitHubSearchResult {
 const GITHUB_CLIENT_ID = "YOUR_SUPABASE_GITHUB_CLIENT_ID";
 const REDIRECT_URI = `${window.location.origin}/oauth/callback/github`;
 
-// Util: open OAuth popup (fallback to window.location if popup is blocked)
+// Deprecated: Use connect() method instead
 function startOAuthFlow() {
   const githubAuthUrl = `https://github.com/login/oauth/authorize` +
     `?client_id=${encodeURIComponent(GITHUB_CLIENT_ID)}` +
@@ -75,8 +77,58 @@ function startOAuthFlow() {
   if (!w) window.location.href = githubAuthUrl;
 }
 
-class GitHubHandler {
+class GitHubHandler extends BasePlatformHandler implements IPlatformHandler {
   private baseUrl = 'https://api.github.com';
+
+  supportsPlatform(platformId: string): boolean {
+    return platformId.toLowerCase() === 'github';
+  }
+
+  async executeRequest(request: IMcpRequest, connectedPlatforms: any[]): Promise<IMcpResponse> {
+    try {
+      const platform = connectedPlatforms.find(p => p.platformId === 'github');
+      if (!platform?.isConnected) {
+        return { success: false, error: 'GitHub is not connected', data: null };
+      }
+
+      const token = await secureStorage.get('githubAccessToken');
+      if (!token) {
+        return { success: false, error: 'GitHub access token not found', data: null };
+      }
+
+      switch (request.action) {
+        case 'list_repos':
+          return await this.listRepositories(token);
+        case 'create_issue':
+          return await this.createIssue(token, request.params);
+        case 'search_repos':
+          return await this.searchRepositories(token, request.params);
+        default:
+          return { success: false, error: `Unsupported GitHub action: ${request.action}`, data: null };
+      }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error', data: null };
+    }
+  }
+
+  async getExecutionHistory(userId: string, limit?: number, platform?: string): Promise<any[]> {
+    // Implementation for fetching GitHub execution history
+    return [];
+  }
+
+  getServerType(): string {
+    return 'github';
+  }
+
+  async disconnect(userId: string): Promise<boolean> {
+    try {
+      await secureStorage.remove('githubAccessToken');
+      return true;
+    } catch (error) {
+      console.error('GitHub disconnect failed:', error);
+      return false;
+    }
+  }
 
   async connect(credentials: Record<string, string>): Promise<boolean> {
     console.log('GitHub connect called with credentials:', { 
@@ -91,6 +143,15 @@ class GitHubHandler {
         console.log('Attempting to verify GitHub token...');
         
         // Validate token format first
+    if (!credentials || (!credentials.token && !credentials.code)) {
+      throw new Error('Missing authentication credentials');
+    }
+    // Handle OAuth code exchange if provided
+    if (credentials.code) {
+      return this.handleOAuthCallback(credentials.code);
+    }
+    // Otherwise use direct token authentication
+    // Validate token format first
         const token = credentials.token.trim();
         if (!token.startsWith('ghp_') && !token.startsWith('github_pat_') && !token.startsWith('gho_') && !token.startsWith('ghu_') && !token.startsWith('ghs_') && !token.startsWith('ghr_')) {
           console.error('Invalid token format detected');

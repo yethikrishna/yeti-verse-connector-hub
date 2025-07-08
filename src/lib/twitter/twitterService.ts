@@ -1,5 +1,6 @@
 
-import { twitterHandler } from '@/handlers/twitter';
+import { TwitterHandler } from '@/handlers/twitterHandler';
+const twitterHandler = new TwitterHandler();
 import { Platform, ConnectionConfig } from '@/types/platform';
 import { twitterApiClient } from '@/handlers/twitter/apiClient';
 import { twitterOAuthHandler } from '@/handlers/twitter/oauthHandler';

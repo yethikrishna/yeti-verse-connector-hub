@@ -1,5 +1,7 @@
 
 import { ConnectionConfig } from "@/types/platform";
+import { IPlatformHandler, BasePlatformHandler } from '@/types/platformHandler';
+import { IMcpRequest, IMcpResponse } from '@/lib/mcp/IMcpServer';
 
 // Gmail OAuth2 config
 const GMAIL_CLIENT_ID = "YOUR_SUPABASE_GMAIL_CLIENT_ID";
@@ -66,39 +68,99 @@ function decodeBase64(encodedData: string): string {
   }
 }
 
-export const gmailHandler = {
-  connect: async (_credentials: Record<string, string>): Promise<boolean> => {
-    startOAuthFlow();
-    return new Promise(() => {}); // Resolved after the OAuth2 callback
-  },
+export class GmailHandler extends BasePlatformHandler implements IPlatformHandler {
+  supportsPlatform(platformId: string): boolean {
+    return platformId.toLowerCase() === 'gmail';
+  }
 
-  test: async (config: ConnectionConfig): Promise<boolean> => {
-    console.log("Testing Gmail connection...");
+  async connect(credentials?: Record<string, string>): Promise<string> {
+    startOAuthFlow();
+    return ''; // OAuth flow handled via popup
+  }
+
+  async disconnect(userId: string): Promise<boolean> {
+    console.log("Disconnecting from Gmail...");
+    // In production, implement token revocation with Google's API
+    return true;
+  }
+
+  async executeRequest(request: IMcpRequest, connectedPlatforms: any[]): Promise<IMcpResponse> {
     try {
-      if (!config.credentials.accessToken) {
-        return false;
+      const platform = connectedPlatforms.find(p => p.platformId === 'gmail');
+      if (!platform?.isConnected || !platform.credentials?.accessToken) {
+        return { success: false, error: 'Gmail is not connected', data: null };
       }
 
-      // Test by fetching user profile
-      await makeGmailApiRequest('profile', config.credentials.accessToken);
+      switch (request.action) {
+        case 'read_emails':
+          return { 
+            success: true, 
+            data: await this.readEmails(platform.credentials, request.params.query, request.params.maxResults) 
+          };
+        case 'send_email':
+          return { 
+            success: true, 
+            data: await this.sendEmail(
+              platform.credentials, 
+              request.params.to, 
+              request.params.subject, 
+              request.params.body, 
+              request.params.isHtml
+            ) 
+          };
+        case 'search_emails':
+          return { 
+            success: true, 
+            data: await this.searchEmails(platform.credentials, request.params.searchQuery, request.params.maxResults) 
+          };
+        case 'get_attachments':
+          return { 
+            success: true, 
+            data: await this.getEmailAttachments(platform.credentials, request.params.messageId) 
+          };
+        case 'test_connection':
+          return { 
+            success: await this.testConnection(platform.credentials), 
+            data: null 
+          };
+        default:
+          return { success: false, error: `Unsupported Gmail action: ${request.action}`, data: null };
+      }
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error', 
+        data: null 
+      };
+    }
+  }
+
+  async getExecutionHistory(userId: string, limit?: number, platform?: string): Promise<any[]> {
+    // Implementation for fetching Gmail execution history
+    return [];
+  }
+
+  getServerType(): string {
+    return 'gmail';
+  }
+
+  private async testConnection(credentials: any): Promise<boolean> {
+    console.log("Testing Gmail connection...");
+    try {
+      if (!credentials.accessToken) return false;
+      await makeGmailApiRequest('profile', credentials.accessToken);
       console.log("Gmail connection test successful");
       return true;
     } catch (error) {
       console.error("Gmail connection test failed:", error);
       return false;
     }
-  },
-
-  disconnect: async (config: ConnectionConfig): Promise<boolean> => {
-    console.log("Disconnecting from Gmail...");
-    // In a real implementation, you might want to revoke the token
-    return true;
-  },
+  }
 
   // MCP Functions for Gmail
-  readEmails: async (config: ConnectionConfig, query: string = '', maxResults: number = 10): Promise<GmailMessage[]> => {
+  private async readEmails(credentials: any, query: string = '', maxResults: number = 10): Promise<GmailMessage[]> {
     try {
-      if (!config.credentials.accessToken) {
+      if (!credentials.accessToken) {
         throw new Error('No access token available');
       }
 
@@ -112,7 +174,7 @@ export const gmailHandler = {
 
       const searchResult: GmailSearchResult = await makeGmailApiRequest(
         `messages?${searchParams}`,
-        config.credentials.accessToken
+        credentials.accessToken
       );
 
       if (!searchResult.messages) {
@@ -125,7 +187,7 @@ export const gmailHandler = {
         searchResult.messages.slice(0, maxResults).map(async (msg) => {
           return await makeGmailApiRequest(
             `messages/${msg.id}`,
-            config.credentials.accessToken
+            credentials.accessToken
           );
         })
       );
@@ -136,17 +198,17 @@ export const gmailHandler = {
       console.error('Error reading emails:', error);
       throw error;
     }
-  },
+  }
 
-  sendEmail: async (
-    config: ConnectionConfig, 
+  private async sendEmail(
+    credentials: any, 
     to: string, 
     subject: string, 
     body: string, 
     isHtml: boolean = false
-  ): Promise<boolean> => {
+  ): Promise<boolean> {
     try {
-      if (!config.credentials.accessToken) {
+      if (!credentials.accessToken) {
         throw new Error('No access token available');
       }
 
@@ -168,7 +230,7 @@ export const gmailHandler = {
         .replace(/\//g, '_')
         .replace(/=+$/, '');
 
-      await makeGmailApiRequest('messages/send', config.credentials.accessToken, {
+      await makeGmailApiRequest('messages/send', credentials.accessToken, {
         method: 'POST',
         body: JSON.stringify({
           raw: encodedMessage
@@ -181,15 +243,15 @@ export const gmailHandler = {
       console.error('Error sending email:', error);
       throw error;
     }
-  },
+  }
 
-  searchEmails: async (
-    config: ConnectionConfig, 
+  private async searchEmails(
+    credentials: any, 
     searchQuery: string, 
     maxResults: number = 50
-  ): Promise<{ messages: GmailMessage[]; totalCount: number }> => {
+  ): Promise<{ messages: GmailMessage[]; totalCount: number }> {
     try {
-      if (!config.credentials.accessToken) {
+      if (!credentials.accessToken) {
         throw new Error('No access token available');
       }
 
@@ -202,7 +264,7 @@ export const gmailHandler = {
 
       const searchResult: GmailSearchResult = await makeGmailApiRequest(
         `messages?${searchParams}`,
-        config.credentials.accessToken
+        credentials.accessToken
       );
 
       if (!searchResult.messages) {
@@ -214,7 +276,7 @@ export const gmailHandler = {
         searchResult.messages.map(async (msg) => {
           return await makeGmailApiRequest(
             `messages/${msg.id}?format=metadata&metadataHeaders=Subject&metadataHeaders=From&metadataHeaders=Date`,
-            config.credentials.accessToken
+            credentials.accessToken
           );
         })
       );
@@ -228,10 +290,10 @@ export const gmailHandler = {
       console.error('Error searching emails:', error);
       throw error;
     }
-  },
+  }
 
   // Additional utility functions
-  getEmailContent: (message: GmailMessage): string => {
+  private getEmailContent(message: GmailMessage): string {
     if (message.payload.body?.data) {
       return decodeBase64(message.payload.body.data);
     }
@@ -252,13 +314,52 @@ export const gmailHandler = {
     }
 
     return message.snippet || '';
-  },
+  }
 
-  getEmailHeaders: (message: GmailMessage): Record<string, string> => {
+  private getEmailHeaders(message: GmailMessage): Record<string, string> {
     const headers: Record<string, string> = {};
     message.payload.headers.forEach(header => {
       headers[header.name.toLowerCase()] = header.value;
     });
     return headers;
   }
-};
+
+  private async getEmailAttachments(credentials: any, messageId: string): Promise<Array<{ name: string; data: string; mimeType: string }>> {
+    try {
+      if (!credentials.accessToken) {
+        throw new Error('No access token available');
+      }
+
+      const message = await makeGmailApiRequest(
+        `messages/${messageId}`,
+        credentials.accessToken
+      );
+
+      const attachments: Array<{ name: string; data: string; mimeType: string }> = [];
+
+      if (message.payload.parts) {
+        for (const part of message.payload.parts) {
+          if (part.filename && part.body?.attachmentId) {
+            const attachment = await makeGmailApiRequest(
+              `messages/${messageId}/attachments/${part.body.attachmentId}`,
+              credentials.accessToken
+            );
+
+            attachments.push({
+              name: part.filename,
+              data: attachment.data,
+              mimeType: part.mimeType || 'application/octet-stream'
+            });
+          }
+        }
+      }
+
+      return attachments;
+    } catch (error) {
+      console.error('Error getting attachments:', error);
+      throw error;
+    }
+  }
+}
+
+export const gmailHandler = new GmailHandler();
