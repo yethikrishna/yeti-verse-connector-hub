@@ -13,7 +13,7 @@ export interface SecureStorageOptions {
   prefix?: string;
 }
 
-class SecureStorage {
+export default class SecureStorage {
   private static instance: SecureStorage;
   private readonly STORAGE_PREFIX = 'yeti_secure_';
   private readonly ENCRYPTION_KEY = 'yeti_internal_key_v1';
