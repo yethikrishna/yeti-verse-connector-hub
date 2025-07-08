@@ -4,6 +4,8 @@ import { IPlatformHandler } from '@/types/platformHandler';
 import { twitterOAuthHandler } from './twitter/oauthHandler';
 
 export class TwitterHandler extends BasePlatformHandler implements IPlatformHandler {
+
+
   supportsPlatform(platformId: string): boolean {
     return platformId.toLowerCase() === 'twitter';
   }
@@ -52,6 +54,10 @@ export class TwitterHandler extends BasePlatformHandler implements IPlatformHand
         error: null,
         data: result
       };
+  }
+}
+
+export const twitterHandler = new TwitterHandler();
     } catch (error) {
       console.error('Twitter API error:', error);
       return {
