@@ -56,7 +56,7 @@ export function YetiSidebar({ onShowConnections, currentView, onShowChat }: Yeti
       icon: Zap,
       onClick: () => {
         setActiveSection('connections');
-        onShowConnections();
+        navigate('/connections');
       },
       badge: connectedPlatforms.length > 0 ? connectedPlatforms.length : null
     },
