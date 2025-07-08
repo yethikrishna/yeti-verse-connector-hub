@@ -20,7 +20,7 @@ export const linkedinHandler = {
       secureStorage.setItem('linkedin-oauth-credentials', {
         clientId,
         clientSecret
-      }));
+      });;
 
       // Initialize OAuth handler
       const oauthHandler = new LinkedInOAuthHandler(clientId, clientSecret);
