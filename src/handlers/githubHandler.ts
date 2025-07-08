@@ -256,10 +256,11 @@ class GitHubHandler extends BasePlatformHandler implements IPlatformHandler {
     }
   }
 
-  async disconnect(config: ConnectionConfig): Promise<boolean> {
-    console.log("Disconnecting from GitHub...");
-    return true;
-  }
+  // Removed duplicate disconnect method
+    // async disconnect(config: ConnectionConfig): Promise<boolean> {
+    //   console.log("Disconnecting from GitHub...");
+    //   return true;
+    // }
 
   // READ Operations
   async getRepositories(

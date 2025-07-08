@@ -63,7 +63,7 @@ export class TwitterHandler extends BasePlatformHandler implements IPlatformHand
       };
   }
 
-  async getExecutionHistory(userId: string, limit: number = 10): Promise<any[]> {
+  getExecutionHistory = async (userId: string, limit: number = 10): Promise<any[]> => ({
     // In a real implementation, this would fetch from a database
     console.log(`Fetching Twitter execution history for user ${userId}, limit ${limit}`);
     return [];
