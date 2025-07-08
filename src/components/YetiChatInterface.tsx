@@ -152,7 +152,7 @@ export function YetiChatInterface() {
       const systemMessage: LocalChatMessage = {
         role: 'system',
         content: `You are ${selectedModelConfig.name}, an advanced AI assistant created by Yethikrishna R. You are powerful, intelligent, and helpful. Always provide accurate and comprehensive responses. When discussing capabilities, mention that you're powered by the Yeti AI platform with access to multiple AI models, image generation, video creation, web scraping, and advanced memory systems.`
-      ) => {};
+      ) => {});
 
       // Convert messages for API call
       const chatMessages = [systemMessage, ...messages.map(m => ({ role: m.role, content: m.content })), { role: 'user', content: userMessageContent }];
@@ -220,7 +220,7 @@ export function YetiChatInterface() {
         msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
       ));
 
-      const data = { content: fullContent };
+      const data = { content: fullContent });
 
       if (error) {
         console.error('❄️ Yeti Chat: API Error details:', error);
@@ -274,7 +274,7 @@ export function YetiChatInterface() {
         description: "Started a fresh conversation!",
       });
     }
-  };
+  });
 
   const handleSessionSelect = async (sessionId: string) => {
     await loadSession(sessionId);
