@@ -20,6 +20,7 @@ import YetiVocoder from "./pages/YetiVocoder";
 import YetiImageStudio from "./pages/YetiImageStudio";
 import YetiStudio from "./pages/YetiStudio";
 import SystemTest from "./pages/SystemTest";
+import LinkedInCallback from "./pages/auth/linkedin/callback";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
             <Route path="/image-studio" element={<YetiImageStudio />} />
             <Route path="/studio" element={<YetiStudio />} />
             <Route path="/system-test" element={<SystemTest />} />
+            <Route path="/auth/linkedin/callback" element={<LinkedInCallback />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthWrapper>
