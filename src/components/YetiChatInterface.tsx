@@ -220,7 +220,7 @@ export function YetiChatInterface() {
         msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
       ));
 
-      const data = { content: fullContent });
+      const data = { content: fullContent };
 
       if (error) {
         console.error('❄️ Yeti Chat: API Error details:', error);
