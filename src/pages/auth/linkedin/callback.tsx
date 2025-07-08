@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import linkedinHandler from '@/handlers/linkedinHandler';
+import { linkedinHandler } from '@/handlers/linkedinHandler';
 
 const LinkedInCallback = () => {
   const navigate = useNavigate();
