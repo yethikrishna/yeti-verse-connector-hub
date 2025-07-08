@@ -210,15 +210,20 @@ export function YetiChatInterface() {
       }
 
       // Final update to ensure complete content is saved
-      await supabase
-        .from('chat_messages')
-        .update({ content: fullContent })
-        .eq('id', assistantMessageId);
+      let error;
+      try {
+        await supabase
+          .from('chat_messages')
+          .update({ content: fullContent })
+          .eq('id', assistantMessageId);
 
-      // Update local state with complete message
-      setMessages(prev => prev.map(msg => 
-        msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
-      ));
+        // Update local state with complete message
+        setMessages(prev => prev.map(msg => 
+          msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
+        ));
+      } catch (err) {
+        error = err;
+      }
 
       const data = { content: fullContent };
 
