@@ -43,11 +43,6 @@ export const platformHandlers = {
   'instagram': instagramHandler,
   'linkedin': linkedinHandler,
   'tiktok': tiktokHandler,
-  'twitter': twitterHandler,
-  'facebook': facebookHandler,
-  'instagram': instagramHandler,
-  'linkedin': linkedinHandler,
-  'tiktok': tiktokHandler,
   'koo': kooHandler,
   'sharechat': sharechatHandler,
   'huggingface': huggingfaceHandler,
@@ -57,8 +52,7 @@ export const platformHandlers = {
   'firebase': firebaseHandler,
   'airtable': airtableHandler,
   'google-docs': googleDocsHandler,
-  'google-sheets': googleSheetsHandler,
-  'notion': notionHandler
+  'google-sheets': googleSheetsHandler
 };
 
 export const isPlatformSupported = (platformId: string): boolean => {
