@@ -60,7 +60,7 @@ export const instagramHandler = {
                 instagramAccountId,
                 appId,
                 appSecret,
-              }););
+              });
 
               console.log('Instagram connected successfully');
               resolve(true);
