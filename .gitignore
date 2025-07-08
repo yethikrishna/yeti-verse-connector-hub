@@ -28,3 +28,5 @@ dist-ssr
 .1024*
 !.1024
 .breakpoints
+# Local Netlify folder
+.netlify

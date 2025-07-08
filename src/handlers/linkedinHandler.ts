@@ -2,6 +2,26 @@ import { IMcpRequest, IMcpResponse } from '@/lib/mcp/IMcpServer';
 import { Platform } from '@/types/platform';
 
 export const linkedinHandler = {
+  handleCallback: async (code: string): Promise<void> => {
+    try {
+      // Exchange authorization code for access token
+      const response = await fetch('/.netlify/functions/linkedin-oauth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+      });
+
+      if (!response.ok) throw new Error('Failed to exchange code');
+      const { accessToken } = await response.json();
+
+      // Store token securely (implement with your auth system)
+      localStorage.setItem('linkedinAccessToken', accessToken);
+    } catch (error) {
+      console.error('LinkedIn callback failed:', error);
+      throw error;
+    }
+  },
+
   supportsPlatform: (platformId: string): boolean => platformId === 'linkedin',
 
   executeRequest: async (request: IMcpRequest, connectedPlatforms: Platform[]): Promise<IMcpResponse> => {
