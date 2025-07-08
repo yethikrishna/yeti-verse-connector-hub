@@ -54,10 +54,6 @@ export class TwitterHandler extends BasePlatformHandler implements IPlatformHand
         error: null,
         data: result
       };
-  }
-}
-
-export const twitterHandler = new TwitterHandler();
     } catch (error) {
       console.error('Twitter API error:', error);
       return {
@@ -65,7 +61,6 @@ export const twitterHandler = new TwitterHandler();
         error: error instanceof Error ? error.message : String(error),
         data: null
       };
-    }
   }
 
   async getExecutionHistory(userId: string, limit: number = 10): Promise<any[]> {
@@ -99,4 +94,7 @@ export const twitterHandler = new TwitterHandler();
   getServerType(): string {
     return 'twitter';
   }
+}
+
+export const twitterHandler = new TwitterHandler();
 }
