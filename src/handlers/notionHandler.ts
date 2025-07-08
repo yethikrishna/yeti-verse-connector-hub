@@ -32,5 +32,37 @@ export const notionHandler = {
   disconnect: async (config: ConnectionConfig): Promise<boolean> => {
     console.log("Disconnecting from Notion...");
     return true;
-  }
+  },
+
+  executeRequest: async (request: IMcpRequest, connectedPlatforms: Platform[]): Promise<IMcpResponse> => {
+    try {
+      const platform = connectedPlatforms.find(p => p.id === 'notion');
+      if (!platform?.isConnected) {
+        return { success: false, error: 'Notion is not connected' };
+      }
+
+      switch (request.action) {
+        case 'list_databases':
+          // Implementation for listing databases
+          return { success: true, data: { databases: [] } };
+        case 'query_database':
+          // Implementation for querying database
+          return { success: true, data: { results: [] } };
+        case 'create_page':
+          // Implementation for creating page
+          return { success: true, data: { pageId: '', url: '' } };
+        default:
+          return { success: false, error: `Unsupported action: ${request.action}` };
+      }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    }
+  },
+
+  getExecutionHistory: async (userId: string, limit?: number, platform?: string): Promise<any[]> => {
+    // Implementation for fetching execution history
+    return [];
+  },
+
+  getServerType: (): string => 'notion'
 };

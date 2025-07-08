@@ -1,4 +1,5 @@
 
+import SecureStorage from '@/lib/security/SecureStorage';
 import { vercelService } from '@/lib/vercel/vercelService';
 import { ConnectionConfig } from '@/types/platform';
 
@@ -16,6 +17,8 @@ export const vercelHandler = {
       
       if (isValid) {
         console.log('Vercel connection successful');
+        // Store credentials securely
+        await secureStorage.setItem('vercel_credentials', JSON.stringify(credentials));
         return true;
       } else {
         console.error('Vercel connection failed: Invalid credentials');

@@ -1,4 +1,5 @@
 
+import SecureStorage from '@/lib/security/SecureStorage';
 import { firebaseService } from '@/lib/firebase/firebaseService';
 import { ConnectionConfig } from '@/types/platform';
 
@@ -24,6 +25,8 @@ export const firebaseHandler = {
       
       if (isValid) {
         console.log('Firebase connection successful');
+        // Store credentials securely
+        await secureStorage.setItem(`firebase_${credentials.projectId}_credentials`, JSON.stringify(credentials));
         return true;
       } else {
         console.error('Firebase connection failed: Invalid credentials');

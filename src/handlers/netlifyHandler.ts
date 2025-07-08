@@ -1,4 +1,5 @@
 
+import SecureStorage from '@/lib/security/SecureStorage';
 import { netlifyService } from '@/lib/netlify/netlifyService';
 import { ConnectionConfig } from '@/types/platform';
 
@@ -16,6 +17,8 @@ export const netlifyHandler = {
       
       if (isValid) {
         console.log('Netlify connection successful');
+        // Store credentials securely
+        await secureStorage.setItem('netlify_credentials', JSON.stringify(credentials));
         return true;
       } else {
         console.error('Netlify connection failed: Invalid credentials');

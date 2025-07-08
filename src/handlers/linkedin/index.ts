@@ -2,6 +2,8 @@
 import { ConnectionConfig } from '@/types/platform';
 import { LinkedInApiClient } from './apiClient';
 import { LinkedInOAuthHandler } from './oauthHandler';
+import SecureStorage from '@/lib/security/SecureStorage';
+const secureStorage = SecureStorage.getInstance();
 
 export const linkedinHandler = {
   async connect(credentials: Record<string, string>): Promise<boolean> {
@@ -15,7 +17,7 @@ export const linkedinHandler = {
       }
 
       // Store credentials for OAuth flow
-      localStorage.setItem('linkedin-oauth-credentials', JSON.stringify({
+      secureStorage.setItem('linkedin-oauth-credentials', {
         clientId,
         clientSecret
       }));
@@ -44,8 +46,8 @@ export const linkedinHandler = {
       console.log('Disconnecting from LinkedIn...');
       
       // Clean up stored credentials and tokens
-      localStorage.removeItem('linkedin-oauth-credentials');
-      localStorage.removeItem('linkedin-access-token');
+      secureStorage.removeItem('linkedin-oauth-credentials');
+      secureStorage.removeItem('linkedin-access-token');
       
       console.log('LinkedIn disconnected successfully');
     } catch (error) {
@@ -58,7 +60,7 @@ export const linkedinHandler = {
     try {
       console.log('Testing LinkedIn connection...');
       
-      const accessToken = localStorage.getItem('linkedin-access-token');
+      const accessToken = secureStorage.getItem('linkedin-access-token');
       if (!accessToken) {
         console.log('No LinkedIn access token found');
         return false;

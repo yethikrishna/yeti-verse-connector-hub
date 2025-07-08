@@ -1,4 +1,7 @@
 
+import SecureStorage from '@/lib/security/SecureStorage';
+const secureStorage = SecureStorage.getInstance();
+
 import { ConnectionConfig } from "@/types/platform";
 
 export const openaiHandler = {
@@ -17,6 +20,8 @@ export const openaiHandler = {
     await new Promise(resolve => setTimeout(resolve, 1200));
     
     console.log("OpenAI connection successful");
+    // Store credentials securely
+    await secureStorage.setItem('openai_credentials', JSON.stringify(credentials));
     return true;
   },
 

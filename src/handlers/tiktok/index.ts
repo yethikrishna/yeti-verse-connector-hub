@@ -2,6 +2,8 @@
 import { ConnectionConfig } from '@/types/platform';
 import { TikTokApiClient } from './apiClient';
 import { TikTokOAuthHandler } from './oauthHandler';
+import SecureStorage from '@/lib/security/SecureStorage';
+const secureStorage = SecureStorage.getInstance();
 
 export const tiktokHandler = {
   async connect(credentials: Record<string, string>): Promise<boolean> {
@@ -18,7 +20,7 @@ export const tiktokHandler = {
       const oauthHandler = new TikTokOAuthHandler(clientId, clientSecret);
       const authUrl = oauthHandler.getAuthUrl();
       
-      sessionStorage.setItem('tiktok_oauth_credentials', JSON.stringify({ clientId, clientSecret }));
+      secureStorage.setItem('tiktok_oauth_credentials', { clientId, clientSecret });
       console.log('tiktokHandler.connect: Redirecting to TikTok OAuth.');
       window.location.href = authUrl;
       
@@ -43,6 +45,7 @@ export const tiktokHandler = {
         console.log('tiktokHandler.disconnect: No access token or client credentials to revoke.');
       }
       
+      secureStorage.removeItem('tiktok_oauth_credentials');
       console.log('tiktokHandler.disconnect: TikTok disconnected successfully.');
     } catch (error) {
       console.error('Error in tiktokHandler.disconnect:', error);

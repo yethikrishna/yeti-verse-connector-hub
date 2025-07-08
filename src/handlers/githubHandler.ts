@@ -1,4 +1,6 @@
 import { ConnectionConfig } from "@/types/platform";
+import SecureStorage from '@/lib/security/SecureStorage';
+const secureStorage = SecureStorage.getInstance();
 
 interface GitHubRepository {
   id: number;
@@ -153,6 +155,8 @@ class GitHubHandler {
           name: user.name,
           publicRepos: user.public_repos
         });
+        // Store credentials securely
+        await secureStorage.setItem(`github_${user.login}_credentials`, JSON.stringify(credentials));
         return true;
       } catch (error) {
         console.error('GitHub connection error caught:', error);

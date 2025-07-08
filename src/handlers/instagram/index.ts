@@ -2,6 +2,8 @@
 import { ConnectionConfig } from '@/types/platform';
 import { InstagramApiClient } from './apiClient';
 import { InstagramOAuthHandler } from './oauthHandler';
+import SecureStorage from '@/lib/security/SecureStorage';
+const secureStorage = SecureStorage.getInstance();
 
 export const instagramHandler = {
   async connect(credentials: Record<string, string>): Promise<boolean> {
@@ -52,7 +54,7 @@ export const instagramHandler = {
               const { pageAccessToken, instagramAccountId } = await oauthHandler.getInstagramAccountId(longLivedTokens.access_token);
               
               // Store tokens securely (in real app, this would go to backend)
-              localStorage.setItem('instagram-tokens', JSON.stringify({
+              secureStorage.setItem('instagram-tokens', {
                 ...longLivedTokens,
                 pageAccessToken,
                 instagramAccountId,
@@ -84,14 +86,14 @@ export const instagramHandler = {
 
   async disconnect(connection: ConnectionConfig): Promise<void> {
     console.log('Disconnecting Instagram...');
-    localStorage.removeItem('instagram-tokens');
+    secureStorage.removeItem('instagram-tokens');
   },
 
   async test(connection: ConnectionConfig): Promise<boolean> {
     console.log('Testing Instagram connection...');
     
     try {
-      const stored = localStorage.getItem('instagram-tokens');
+      const stored = secureStorage.getItem('instagram-tokens');
       if (!stored) return false;
 
       const tokens = JSON.parse(stored);
