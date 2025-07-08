@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -113,7 +113,7 @@ export function YetiChatInterface() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = useCallback(async () => {
     if (!inputMessage.trim()) return;
 
     console.log('🧊 Yeti Chat: Starting message send process');
@@ -163,15 +163,64 @@ export function YetiChatInterface() {
         messageCount: chatMessages.length
       });
 
-      const { data, error } = await supabase.functions.invoke('yeti-ai-chat', {
-        body: {
+      // Create assistant message with empty content for streaming
+      const assistantMessageId = await saveMessage(sessionId, 'assistant', '');
+      if (!assistantMessageId) throw new Error('Failed to initialize assistant message');
+
+      // Update local state with temporary message
+      setMessages(prev => [...prev, { id: assistantMessageId, role: 'assistant', content: '' }]);
+
+      // Stream response from API
+      const response = await fetch('/api/stream-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           provider: selectedModelConfig.provider,
           model: selectedModelConfig.model_name,
           messages: chatMessages,
           max_tokens: 2000,
           temperature: 0.7
-        },
+        })
       });
+
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.body) throw new Error('No response body');
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullContent = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        fullContent += chunk;
+
+        // Update message in memory
+        await supabase
+          .from('chat_messages')
+          .update({ content: fullContent })
+          .eq('id', assistantMessageId);
+
+        // Update local state
+        setMessages(prev => prev.map(msg => 
+          msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
+        ));
+      }
+
+      // Final update to ensure complete content is saved
+      await supabase
+        .from('chat_messages')
+        .update({ content: fullContent })
+        .eq('id', assistantMessageId);
+
+      // Update local state with complete message
+      setMessages(prev => prev.map(msg => 
+        msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
+      ));
+
+      const data = { content: fullContent };
 
       if (error) {
         console.error('❄️ Yeti Chat: API Error details:', error);
@@ -450,83 +499,92 @@ export function YetiChatInterface() {
           </CardHeader>
           
             <CardContent className="flex-1 flex flex-col p-0">
-              <ScrollArea className="flex-1 p-3 sm:p-4">
-                <div className="space-y-3 sm:space-y-4">
-                  {messages.length === 0 ? (
-                    <div className="text-center py-8 sm:py-12 px-4">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                        <Brain className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                      </div>
-                      <h3 className="text-lg sm:text-xl font-semibold mb-2">Welcome to Yeti AI! 🧊</h3>
-                      <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
-                        I'm your advanced AI assistant with persistent memory.
-                      </p>
-                      <div className="flex justify-center gap-2 flex-wrap">
-                        <Badge variant="outline" className="text-blue-600 text-xs">
-                          <Sparkles className="h-3 w-3 mr-1" />
-                          Multi-Model AI
-                        </Badge>
-                        <Badge variant="outline" className="text-purple-600 text-xs">
-                          <Zap className="h-3 w-3 mr-1" />
-                          Advanced Reasoning
-                        </Badge>
-                        <Badge variant="outline" className="text-green-600 text-xs">
-                          <Brain className="h-3 w-3 mr-1" />
-                          Smart Memory
-                        </Badge>
-                      </div>
-                    </div>
-                  ) : (
-                  messages.map((message, index) => (
-                    <div
-                      key={index}
-                      className={`flex gap-3 ${
-                        message.role === 'user' ? 'justify-end' : 'justify-start'
-                      }`}
-                    >
-                      {message.role === 'assistant' && (
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Bot className="h-4 w-4 text-white" />
-                        </div>
-                      )}
-                      <div
-                        className={`max-w-[70%] rounded-lg px-4 py-2 ${
-                          message.role === 'user'
-                            ? 'bg-blue-600 text-white ml-auto'
-                            : 'bg-gray-100 text-gray-900'
-                        }`}
-                      >
-                        <div className="whitespace-pre-wrap">{message.content}</div>
-                      </div>
-                      {message.role === 'user' && (
-                        <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
-                          <User className="h-4 w-4 text-white" />
-                        </div>
-                      )}
-                    </div>
-                  ))
-                )}
-                
-                {isGenerating && (
-                  <div className="flex gap-3 justify-start">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <ScrollArea className="flex-1 h-0 pr-2">
+          <div className="space-y-3 sm:space-y-4">
+            {messages.length === 0 ? (
+              <div className="text-center py-8 sm:py-12 px-4">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <Brain className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">Welcome to Yeti AI! 🧊</h3>
+                <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
+                  I'm your advanced AI assistant with persistent memory.
+                </p>
+                <div className="flex justify-center gap-2 flex-wrap">
+                  <Badge variant="outline" className="text-blue-600 text-xs">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    Multi-Model AI
+                  </Badge>
+                  <Badge variant="outline" className="text-purple-600 text-xs">
+                    <Zap className="h-3 w-3 mr-1" />
+                    Advanced Reasoning
+                  </Badge>
+                  <Badge variant="outline" className="text-green-600 text-xs">
+                    <Brain className="h-3 w-3 mr-1" />
+                    Smart Memory
+                  </Badge>
+                </div>
+              </div>
+            ) : (
+              messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex gap-3 animate-fade-in ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  {message.role === 'assistant' && (
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                       <Bot className="h-4 w-4 text-white" />
                     </div>
-                    <div className="bg-gray-100 rounded-lg px-4 py-2">
-                      <div className="flex items-center gap-2">
-                        <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                          <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                          <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                        </div>
-                        <span className="text-gray-600 text-sm">Yeti AI is thinking...</span>
-                      </div>
-                    </div>
+                  )}
+                  <div
+                    className={`max-w-[70%] rounded-lg px-4 py-2 relative ${message.role === 'user' ? 'bg-blue-600 text-white ml-auto' : 'bg-gray-100 text-gray-900'}`}
+                  >
+                    <div className="whitespace-pre-wrap">{message.content}</div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={async () => {
+                        setMessages(prev => prev.filter(m => m.id !== message.id));
+                        const { error } = await supabase
+                          .from('chat_messages')
+                          .delete()
+                          .eq('id', message.id);
+                        if (error) console.error('Error deleting message:', error);
+                      }}
+                      className="absolute top-1 right-1 h-6 w-6 p-0 opacity-0 hover:opacity-100 transition-opacity"
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
                   </div>
-                )}
+                  {message.role === 'user' && (
+                    <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <User className="h-4 w-4 text-white" />
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+            
+            {isStreaming && (
+              <div className="flex gap-3 justify-start animate-pulse">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                  <Bot className="h-4 w-4 text-white" />
+                </div>
+                <div className="bg-gray-100 rounded-lg px-4 py-2">
+                  <div className="flex items-center gap-2">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                      <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
+                    <span className="text-gray-600 text-sm">Yeti AI is typing...</span>
+                  </div>
+                </div>
               </div>
-              <div ref={messagesEndRef} />
-            </ScrollArea>
+            )}
+          </div>
+          <div ref={messagesEndRef} />
+        </ScrollArea>
 
             <div className="border-t p-3 sm:p-4">
               {/* Mobile-optimized input section */}
