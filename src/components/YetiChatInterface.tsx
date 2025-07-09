@@ -160,8 +160,8 @@ export function YetiChatInterface() {
       console.log('🧊 Yeti Chat: Calling AI service with:', {
         provider: selectedModelConfig.provider,
         model: selectedModelConfig.model_name,
-        messageCount: chatMessages.length
-      };
+          messageCount: chatMessages.length
+        });
 
       // Create assistant message with empty content for streaming
       const assistantMessageId = await saveMessage(sessionId, 'assistant', '');
