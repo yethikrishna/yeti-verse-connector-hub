@@ -160,8 +160,8 @@ export function YetiChatInterface() {
       console.log('🧊 Yeti Chat: Calling AI service with:', {
         provider: selectedModelConfig.provider,
         model: selectedModelConfig.model_name,
-          messageCount: chatMessages.length
-        }, []);
+        messageCount: chatMessages.length
+      });
 
       // Create assistant message with empty content for streaming
       const assistantMessageId = await saveMessage(sessionId, 'assistant', '');
@@ -191,8 +191,8 @@ export function YetiChatInterface() {
       let fullContent = '';
       let streamError = null;
 
-      while (true) {
-        try {
+      try {
+        while (true) {
           const { done, value } = await reader.read();
           if (done) break;
 
@@ -287,8 +287,8 @@ export function YetiChatInterface() {
         variant: "destructive",
       });
     } finally {
-      setIsGenerating(false);
-    }
+        setIsGenerating(false);
+      }
   });
 
   const handleNewSession = async () => {
