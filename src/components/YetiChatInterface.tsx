@@ -218,6 +218,7 @@ export function YetiChatInterface() {
           setMessages(prev => prev.map(msg => 
             msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
           ));
+        }
         } catch (readError) {
           console.error('❄️ Yeti Chat: Stream read error:', readError);
           streamError = readError;
