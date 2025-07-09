@@ -226,7 +226,7 @@ export function YetiChatInterface() {
         }
       }
 
-      if (streamError) {
+      finally {
         throw new Error(`Stream processing failed: ${streamError.message}`);
       }
 
