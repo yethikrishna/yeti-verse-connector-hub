@@ -160,7 +160,7 @@ export function YetiSidebar({ onShowConnections, currentView, onShowChat }: Yeti
     },
     {
       label: 'Connected',
-      value: connectedPlatforms.length.toString(),
+      value: (connectedPlatforms?.length || 0).toString(),
       icon: Zap,
       color: 'text-green-600'
     },
