@@ -161,7 +161,7 @@ export function YetiChatInterface() {
         provider: selectedModelConfig.provider,
         model: selectedModelConfig.model_name,
           messageCount: chatMessages.length
-        });
+        )}
 
       // Create assistant message with empty content for streaming
       const assistantMessageId = await saveMessage(sessionId, 'assistant', '');
