@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Send, Bot, User, Brain, Sparkles, Zap, RefreshCw, Plus, Image, Video, History, Save, Menu, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
+import { Send, Bot, User, Brain, Sparkles, Zap, RefreshCw, Plus, Image, Video, History, Save, Menu, Mic, MicOff, Volume2, VolumeX, X } from "lucide-react";
 import { VoiceInput } from "@/components/VoiceInput";
 import { VoiceControls } from "@/components/VoiceControls";
 import { useVoiceOutput } from "@/hooks/useVoiceOutput";
@@ -140,9 +140,11 @@ export function YetiChatInterface() {
     const savedUser = await saveMessage(sessionId, 'user', userMessageContent);
     if (!savedUser) {
       console.error('❄️ Yeti Chat: Failed to save user message');
+      setIsGenerating(false); // Ensure loading state is reset
       return;
     }
 
+    // Main try block for the entire send message operation
     try {
       const selectedModelConfig = yetiModels.find(m => m.id === selectedModel);
       if (!selectedModelConfig) throw new Error('Model not found');
@@ -154,7 +156,6 @@ export function YetiChatInterface() {
         content: `You are ${selectedModelConfig.name}, an advanced AI assistant created by Yethikrishna R. You are powerful, intelligent, and helpful. Always provide accurate and comprehensive responses. When discussing capabilities, mention that you're powered by the Yeti AI platform with access to multiple AI models, image generation, video creation, web scraping, and advanced memory systems.`
       };
 
-      // Convert messages for API call
       const chatMessages = [systemMessage, ...messages.map(m => ({ role: m.role, content: m.content })), { role: 'user', content: userMessageContent }];
 
       console.log('🧊 Yeti Chat: Calling AI service with:', {
@@ -163,14 +164,11 @@ export function YetiChatInterface() {
         messageCount: chatMessages.length
       });
 
-      // Create assistant message with empty content for streaming
       const assistantMessageId = await saveMessage(sessionId, 'assistant', '');
       if (!assistantMessageId) throw new Error('Failed to initialize assistant message');
 
-      // Update local state with temporary message
       setMessages(prev => [...prev, { id: assistantMessageId, role: 'assistant', content: '' }]);
 
-      // Stream response from API
       const response = await fetch('/api/stream-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -189,8 +187,9 @@ export function YetiChatInterface() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let fullContent = '';
-      let streamError = null;
+      let streamReadError: Error | null = null;
 
+      // Inner try-catch for the stream reading loop
       try {
         while (true) {
           const { done, value } = await reader.read();
@@ -199,80 +198,66 @@ export function YetiChatInterface() {
           const chunk = decoder.decode(value, { stream: true });
           fullContent += chunk;
 
-          // Update message in memory with error handling
           try {
             await supabase
               .from('chat_messages')
               .update({ content: fullContent })
               .eq('id', assistantMessageId);
           } catch (dbError) {
-            console.error('❄️ Yeti Chat: Database update error:', dbError);
+            console.error('❄️ Yeti Chat: Database update error during stream:', dbError);
             toast({
               title: "❄️ Database Error",
-              description: "Failed to update message in memory.",
+              description: "Failed to update message in memory during stream.",
               variant: "destructive",
             });
+            // Continue streaming even if this specific DB update fails
           }
 
-          // Update local state
-          setMessages(prev => prev.map(msg => 
+          setMessages(prev => prev.map(msg =>
             msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
           ));
         }
-        } catch (readError) {
-          console.error('❄️ Yeti Chat: Stream read error:', readError);
-          streamError = readError;
-          break;
+      } catch (readError) {
+        console.error('❄️ Yeti Chat: Stream read error:', readError);
+        streamReadError = readError as Error;
+      }
+
+      // After the loop, if a stream error occurred, re-throw it to be caught by the main catch block
+      if (streamReadError) {
+        throw new Error(`Stream processing failed: ${streamReadError.message}`);
+      }
+
+      // Final update to ensure complete content is saved, only if content exists
+      if (fullContent) {
+        try {
+          await supabase
+            .from('chat_messages')
+            .update({ content: fullContent })
+            .eq('id', assistantMessageId);
+        } catch (finalDbError) {
+          console.error('❄️ Yeti Chat: Final database update error:', finalDbError);
+          toast({
+            title: "❄️ Database Error",
+            description: "Failed to save complete message to memory.",
+            variant: "destructive",
+          });
+          throw finalDbError; // Re-throw to be caught by the main catch block
         }
       }
 
-      finally {
-        throw new Error(`Stream processing failed: ${streamError.message}`);
+      // Ensure local state is updated with the final fullContent
+      setMessages(prev => prev.map(msg =>
+        msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
+      ));
+
+      if (!fullContent && !streamReadError) {
+        throw new Error('No content was generated by the AI service.');
       }
 
-      // Final update to ensure complete content is saved
-      let error;
-      try {
-        await supabase
-          .from('chat_messages')
-          .update({ content: fullContent })
-          .eq('id', assistantMessageId);
+      console.log('🧊 Yeti Chat: API Response (streamed) received successfully:', fullContent.substring(0, 100) + '...');
 
-        // Update local state with complete message
-        setMessages(prev => prev.map(msg => 
-          msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
-        ));
-      } catch (err) {
-        error = err;
-      }
-
-      const data = { content: fullContent };
-
-      if (error) {
-        console.error('❄️ Yeti Chat: API Error details:', error);
-        console.error('❄️ Yeti Chat: Error message:', error.message);
-        console.error('❄️ Yeti Chat: Error code:', error.code);
-        throw new Error(`API Error: ${error.message || 'Unknown error'}`);
-      }
-
-      if (!data) {
-        console.error('❄️ Yeti Chat: No data received from API');
-        throw new Error('No response data received from AI service');
-      }
-
-      if (!data.content) {
-        console.error('❄️ Yeti Chat: Invalid response format:', data);
-        throw new Error('Invalid response format - missing content');
-      }
-
-      console.log('🧊 Yeti Chat: API Response received successfully:', data.content.substring(0, 100) + '...');
-
-      // Remove redundant save since we already updated during streaming
-      // await saveMessage(sessionId, 'assistant', data.content);
-
-      // Generate voice output if enabled
-      if (isVoiceEnabled && data.content) {
-        await generateSpeech(data.content);
+      if (isVoiceEnabled && fullContent) {
+        await generateSpeech(fullContent);
       }
 
       toast({
@@ -280,17 +265,17 @@ export function YetiChatInterface() {
         description: "Message generated and saved to memory!",
       });
 
-    } catch (error) {
-      console.error('Chat error:', error);
+    } catch (error) { // Main catch block for handleSendMessage
+      console.error('Chat error in handleSendMessage:', error);
       toast({
         title: "❄️ Yeti AI Error",
-        description: "Failed to generate response. Please try again.",
+        description: (error instanceof Error && error.message) ? error.message : "Failed to generate response. Please try again.",
         variant: "destructive",
       });
-    } finally {
+    } finally { // Main finally block for handleSendMessage
         setIsGenerating(false);
-      }
-  });
+    }
+  }, [currentSession, generateSpeech, inputMessage, isVoiceEnabled, messages, saveMessage, selectedModel, setMessages, startNewSession, toast, yetiModels]);
 
   const handleNewSession = async () => {
     const sessionId = await startNewSession(selectedModel);
@@ -307,49 +292,8 @@ export function YetiChatInterface() {
     setShowHistory(false); // Hide history on mobile after selection
   };
 
-  const handleImageGeneration = async () => {
-    if (!imagePrompt.trim()) return;
-    setIsGenerating(true);
-    try {
-      const response = await fetch('/api/generate-image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: imagePrompt })
-      });
-      if (!response.ok) throw new Error('Image generation failed');
-      const result = await response.json();
-      toast({ title: '🖼️ Image Generated', description: 'Image created successfully!' });
-      setImagePrompt('');
-      setIsImageDialogOpen(false);
-    } catch (error) {
-      console.error('Image generation error:', error);
-      toast({ title: '❌ Image Error', description: 'Failed to generate image', variant: 'destructive' });
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleVideoGeneration = async () => {
-    if (!videoPrompt.trim()) return;
-    setIsGenerating(true);
-    try {
-      const response = await fetch('/api/generate-video', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: videoPrompt })
-      });
-      if (!response.ok) throw new Error('Video generation failed');
-      const result = await response.json();
-      toast({ title: '🎬 Video Generated', description: 'Video processing started!' });
-      setVideoPrompt('');
-      setIsVideoDialogOpen(false);
-    } catch (error) {
-      console.error('Video generation error:', error);
-      toast({ title: '❌ Video Error', description: 'Failed to generate video', variant: 'destructive' });
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+  // Removed older fetch-based handleImageGeneration and handleVideoGeneration functions.
+  // The Supabase function-based versions defined later are used.
 
   const handleVoiceTranscript = (transcript: string) => {
     setInputMessage(inputMessage + (inputMessage ? ' ' : '') + transcript);
@@ -635,23 +579,11 @@ export function YetiChatInterface() {
               ))
             )}
             
-            {isStreaming && (
-              <div className="flex gap-3 justify-start animate-pulse">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <Bot className="h-4 w-4 text-white" />
-                </div>
-                <div className="bg-gray-100 rounded-lg px-4 py-2">
-                  <div className="flex items-center gap-2">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                      <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                    </div>
-                    <span className="text-gray-600 text-sm">Yeti AI is typing...</span>
-                  </div>
-                </div>
-              </div>
-            )}
+            {/*
+              TODO: Implement isStreaming state if a typing indicator is desired.
+              The isStreaming variable was used here but not defined.
+              For now, this block is removed to prevent runtime errors.
+            */}
           </div>
           <div ref={messagesEndRef} />
         </ScrollArea>

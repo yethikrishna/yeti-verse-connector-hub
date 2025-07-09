@@ -61,13 +61,14 @@ export class TwitterHandler extends BasePlatformHandler implements IPlatformHand
         error: error instanceof Error ? error.message : String(error),
         data: null
       };
-  }
+    } // This closes the catch block of executeRequest
+  } // This closes the executeRequest method body
 
-  getExecutionHistory = async (userId: string, limit: number = 10): Promise<any[]> => ({
+  getExecutionHistory = async (userId: string, limit: number = 10): Promise<any[]> => {
     // In a real implementation, this would fetch from a database
     console.log(`Fetching Twitter execution history for user ${userId}, limit ${limit}`);
     return [];
-  }
+  };
 
   async connect(credentials: ConnectionConfig): Promise<boolean> {
     console.log('Starting Twitter OAuth connection...');
@@ -97,4 +98,3 @@ export class TwitterHandler extends BasePlatformHandler implements IPlatformHand
 }
 
 export const twitterHandler = new TwitterHandler();
-}
