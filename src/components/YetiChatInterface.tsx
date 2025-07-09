@@ -161,7 +161,7 @@ export function YetiChatInterface() {
         provider: selectedModelConfig.provider,
         model: selectedModelConfig.model_name,
         messageCount: chatMessages.length
-      });
+      };
 
       // Create assistant message with empty content for streaming
       const assistantMessageId = await saveMessage(sessionId, 'assistant', '');
@@ -181,7 +181,7 @@ export function YetiChatInterface() {
           max_tokens: 2000,
           temperature: 0.7
         })
-      });
+      };
 
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       if (!response.body) throw new Error('No response body');
@@ -189,24 +189,44 @@ export function YetiChatInterface() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let fullContent = '';
+      let streamError = null;
 
       while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+        try {
+          const { done, value } = await reader.read();
+          if (done) break;
 
-        const chunk = decoder.decode(value, { stream: true });
-        fullContent += chunk;
+          const chunk = decoder.decode(value, { stream: true });
+          fullContent += chunk;
 
-        // Update message in memory
-        await supabase
-          .from('chat_messages')
-          .update({ content: fullContent })
-          .eq('id', assistantMessageId);
+          // Update message in memory with error handling
+          try {
+            await supabase
+              .from('chat_messages')
+              .update({ content: fullContent })
+              .eq('id', assistantMessageId);
+          } catch (dbError) {
+            console.error('❄️ Yeti Chat: Database update error:', dbError);
+            toast({
+              title: "❄️ Database Error",
+              description: "Failed to update message in memory.",
+              variant: "destructive",
+            });
+          }
 
-        // Update local state
-        setMessages(prev => prev.map(msg => 
-          msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
-        ));
+          // Update local state
+          setMessages(prev => prev.map(msg => 
+            msg.id === assistantMessageId ? { ...msg, content: fullContent } : msg
+          ));
+        } catch (readError) {
+          console.error('❄️ Yeti Chat: Stream read error:', readError);
+          streamError = readError;
+          break;
+        }
+      }
+
+      if (streamError) {
+        throw new Error(`Stream processing failed: ${streamError.message}`);
       }
 
       // Final update to ensure complete content is saved
@@ -246,8 +266,8 @@ export function YetiChatInterface() {
 
       console.log('🧊 Yeti Chat: API Response received successfully:', data.content.substring(0, 100) + '...');
 
-      // Save assistant message to memory (this will trigger a reload of messages)
-      await saveMessage(sessionId, 'assistant', data.content);
+      // Remove redundant save since we already updated during streaming
+      // await saveMessage(sessionId, 'assistant', data.content);
 
       // Generate voice output if enabled
       if (isVoiceEnabled && data.content) {
@@ -279,11 +299,55 @@ export function YetiChatInterface() {
         description: "Started a fresh conversation!",
       });
     }
-  });
+  };
 
   const handleSessionSelect = async (sessionId: string) => {
     await loadSession(sessionId);
     setShowHistory(false); // Hide history on mobile after selection
+  };
+
+  const handleImageGeneration = async () => {
+    if (!imagePrompt.trim()) return;
+    setIsGenerating(true);
+    try {
+      const response = await fetch('/api/generate-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: imagePrompt })
+      });
+      if (!response.ok) throw new Error('Image generation failed');
+      const result = await response.json();
+      toast({ title: '🖼️ Image Generated', description: 'Image created successfully!' });
+      setImagePrompt('');
+      setIsImageDialogOpen(false);
+    } catch (error) {
+      console.error('Image generation error:', error);
+      toast({ title: '❌ Image Error', description: 'Failed to generate image', variant: 'destructive' });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleVideoGeneration = async () => {
+    if (!videoPrompt.trim()) return;
+    setIsGenerating(true);
+    try {
+      const response = await fetch('/api/generate-video', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: videoPrompt })
+      });
+      if (!response.ok) throw new Error('Video generation failed');
+      const result = await response.json();
+      toast({ title: '🎬 Video Generated', description: 'Video processing started!' });
+      setVideoPrompt('');
+      setIsVideoDialogOpen(false);
+    } catch (error) {
+      console.error('Video generation error:', error);
+      toast({ title: '❌ Video Error', description: 'Failed to generate video', variant: 'destructive' });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleVoiceTranscript = (transcript: string) => {
@@ -616,10 +680,10 @@ export function YetiChatInterface() {
                           className="min-h-[80px]"
                         />
                         <Button 
-                          onClick={handleImageGeneration}
-                          disabled={!imagePrompt.trim() || isGenerating}
-                          className="w-full"
-                        >
+                    onClick={handleGenerateImage}
+                    disabled={!imagePrompt.trim() || isGenerating}
+                    className="w-full"
+                  >
                           {isGenerating ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <Image className="h-4 w-4 mr-2" />}
                           Generate Image
                         </Button>
@@ -647,10 +711,10 @@ export function YetiChatInterface() {
                           className="min-h-[80px]"
                         />
                         <Button 
-                          onClick={handleVideoGeneration}
-                          disabled={!videoPrompt.trim() || isGenerating}
-                          className="w-full"
-                        >
+                    onClick={handleGenerateVideo}
+                    disabled={!videoPrompt.trim() || isGenerating}
+                    className="w-full"
+                  >
                           {isGenerating ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <Video className="h-4 w-4 mr-2" />}
                           Generate Video
                         </Button>
@@ -680,12 +744,16 @@ export function YetiChatInterface() {
                     disabled={isGenerating}
                   />
                   <Button 
-                    onClick={handleSendMessage}
-                    disabled={!inputMessage.trim() || isGenerating}
-                    className="h-11"
-                  >
-                    {isGenerating ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                  </Button>
+        onClick={handleSendMessage}
+        disabled={!inputMessage.trim() || isGenerating}
+        className="h-11"
+      >
+        {isGenerating ? (
+          <RefreshCw className="h-4 w-4 animate-spin" />
+        ) : (
+          <> <Send className="h-4 w-4 mr-2" /> Send </>
+        )}
+      </Button>
                 </div>
                 
                 {/* Voice Controls - Compact for Mobile */}
