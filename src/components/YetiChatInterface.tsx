@@ -161,7 +161,7 @@ export function YetiChatInterface() {
         provider: selectedModelConfig.provider,
         model: selectedModelConfig.model_name,
           messageCount: chatMessages.length
-        });
+        }, []);
 
       // Create assistant message with empty content for streaming
       const assistantMessageId = await saveMessage(sessionId, 'assistant', '');
@@ -181,7 +181,7 @@ export function YetiChatInterface() {
           max_tokens: 2000,
           temperature: 0.7
         })
-      };
+      );
 
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       if (!response.body) throw new Error('No response body');
