@@ -328,6 +328,9 @@ export function YetiChatInterface() {
 
       if (error) throw error;
 
+      if (!data || !data.images || data.images.length === 0 || !data.images[0].url) {
+        throw new Error("Image generation succeeded but no image URL was returned.");
+      }
       const imageContent = `🎨 **Image Generated:** "${imagePrompt}"\n\n![Generated Image](${data.images[0].url})`;
       
       // Save to memory if we have a session
@@ -372,6 +375,9 @@ export function YetiChatInterface() {
 
       if (error) throw error;
 
+      if (!data || !data.videos || data.videos.length === 0 || !data.videos[0].url) {
+        throw new Error("Video generation succeeded but no video URL was returned.");
+      }
       const videoContent = `🎬 **Video Generated:** "${videoPrompt}"\n\n[Video Link](${data.videos[0].url})`;
 
       // Save to memory if we have a session
