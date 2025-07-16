@@ -5,11 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
+import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Shield, AlertTriangle, CheckCircle, Lock, Eye, Activity, Zap, Globe } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const YetiSecurity = () => {
+interface YetiSecurityProps {
+  userButton?: ReactNode;
+}
+
+const YetiSecurity = ({ userButton }: YetiSecurityProps) => {
   const { toast } = useToast();
   const [securitySettings, setSecuritySettings] = useState({
     twoFactorAuth: true,
@@ -67,7 +72,7 @@ const YetiSecurity = () => {
   };
 
   return (
-    <YetiLayout title="Yeti Security" icon={Shield}>
+    <YetiLayout title="Yeti Security" icon={Shield} userButton={userButton}>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>

@@ -31,16 +31,16 @@ export default defineConfig({
     sourcemap: true,
   },
   logLevel: 'info',
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-dom/client'],
-    exclude: ['@clerk/clerk-react'],
-    force: true,
-    esbuildOptions: {
-      target: 'es2020'
-    }
-  },
-  esbuild: {
-    logOverride: { 'this-is-undefined-in-esm': 'silent' },
-    target: 'es2020'
-  }
+  // optimizeDeps: {
+  //   include: ['react', 'react-dom', 'react-dom/client'],
+  //   exclude: ['@clerk/clerk-react'],
+  //   force: true,
+  //   esbuildOptions: {
+  //     target: 'es2020'
+  //   }
+  // },
+  // esbuild: {
+  //   logOverride: { 'this-is-undefined-in-esm': 'silent' },
+  //   target: 'es2020'
+  // }
 });

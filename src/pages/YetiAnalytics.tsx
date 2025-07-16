@@ -1,9 +1,14 @@
+import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { BarChart3 } from "lucide-react";
 
-const YetiAnalytics = () => {
+interface YetiAnalyticsProps {
+  userButton?: ReactNode;
+}
+
+const YetiAnalytics = ({ userButton }: YetiAnalyticsProps) => {
   return (
-    <YetiLayout title="Analytics" icon={BarChart3}>
+    <YetiLayout title="Analytics" icon={BarChart3} userButton={userButton}>
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold">🧊 Yeti Analytics</h1>

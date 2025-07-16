@@ -5,11 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Globe, Bookmark, History, Shield, Zap, RefreshCw, ArrowLeft, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const YetiBrowser = () => {
+interface YetiBrowserProps {
+  userButton?: ReactNode;
+}
+
+const YetiBrowser = ({ userButton }: YetiBrowserProps) => {
   const { toast } = useToast();
   const [url, setUrl] = useState("https://yeti-ai.com");
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +81,7 @@ const YetiBrowser = () => {
   ];
 
   return (
-    <YetiLayout title="Yeti Browser" icon={Globe}>
+    <YetiLayout title="Yeti Browser" icon={Globe} userButton={userButton}>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>

@@ -1,12 +1,14 @@
 
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 interface AuthWrapperProps {
   children: ReactNode;
 }
 
 export const AuthWrapper = ({ children }: AuthWrapperProps) => {
+  const userButton = <UserButton afterSignOutUrl="/" />;
+
   return (
     <>
       <SignedOut>
@@ -25,10 +27,12 @@ export const AuthWrapper = ({ children }: AuthWrapperProps) => {
         </div>
       </SignedOut>
       <SignedIn>
-        <div className="absolute top-4 right-4 z-50">
-          <UserButton afterSignOutUrl="/" />
-        </div>
-        {children}
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
+            return React.cloneElement(child, { userButton } as any);
+          }
+          return child;
+        })}
       </SignedIn>
     </>
   );

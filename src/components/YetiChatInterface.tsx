@@ -17,12 +17,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { useYetiChatMemory, ChatMessage } from "@/hooks/useYetiChatMemory";
 import { YetiChatHistory } from "@/components/YetiChatHistory";
 
+import { ReactNode } from "react";
+
 interface LocalChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
 }
 
-export function YetiChatInterface() {
+interface YetiChatInterfaceProps {
+  userButton?: ReactNode;
+}
+
+export function YetiChatInterface({ userButton }: YetiChatInterfaceProps) {
   const [inputMessage, setInputMessage] = useState("");
   const [selectedModel, setSelectedModel] = useState("yeti-core-alpha");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -496,6 +502,7 @@ export function YetiChatInterface() {
                   <Button variant="outline" size="sm" onClick={handleClearCurrentSession}>
                     <RefreshCw className="h-4 w-4" />
                   </Button>
+                  <div className="ml-2">{userButton}</div>
                 </div>
                 
                 {/* Mobile Action Buttons */}

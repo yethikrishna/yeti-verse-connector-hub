@@ -6,11 +6,16 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
+import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Brain, Zap, Settings, Activity, TrendingUp, BarChart3 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const YetiModels = () => {
+interface YetiModelsProps {
+  userButton?: ReactNode;
+}
+
+const YetiModels = ({ userButton }: YetiModelsProps) => {
   const { toast } = useToast();
   const [models] = useState([
     {
@@ -96,7 +101,7 @@ const YetiModels = () => {
   };
 
   return (
-    <YetiLayout title="Yeti AI Models" icon={Brain}>
+    <YetiLayout title="Yeti AI Models" icon={Brain} userButton={userButton}>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>

@@ -5,11 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Computer, Terminal, Folder, FileText, Play, Download, Upload, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const YetiComputer = () => {
+interface YetiComputerProps {
+  userButton?: ReactNode;
+}
+
+const YetiComputer = ({ userButton }: YetiComputerProps) => {
   const { toast } = useToast();
   const [terminalInput, setTerminalInput] = useState("");
   const [terminalHistory, setTerminalHistory] = useState([
@@ -72,7 +77,7 @@ const YetiComputer = () => {
   ];
 
   return (
-    <YetiLayout title="Yeti Computer" icon={Computer}>
+    <YetiLayout title="Yeti Computer" icon={Computer} userButton={userButton}>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>

@@ -5,12 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { WorkflowBuilder } from "@/components/workflow/YetiWorkflowBuilder";
 import { Workflow, Play, Pause, Settings, Zap, GitBranch, Timer, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const YetiWorkflows = () => {
+interface YetiWorkflowsProps {
+  userButton?: ReactNode;
+}
+
+const YetiWorkflows = ({ userButton }: YetiWorkflowsProps) => {
   const { toast } = useToast();
   const [workflows, setWorkflows] = useState([
     {
@@ -59,7 +64,7 @@ const YetiWorkflows = () => {
   };
 
   return (
-    <YetiLayout title="Yeti Workflows" icon={Workflow}>
+    <YetiLayout title="Yeti Workflows" icon={Workflow} userButton={userButton}>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>

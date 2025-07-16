@@ -1,9 +1,14 @@
+import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Mic2 } from "lucide-react";
 
-const YetiVocoder = () => {
+interface YetiVocoderProps {
+  userButton?: ReactNode;
+}
+
+const YetiVocoder = ({ userButton }: YetiVocoderProps) => {
   return (
-    <YetiLayout title="Voice Studio" icon={Mic2}>
+    <YetiLayout title="Voice Studio" icon={Mic2} userButton={userButton}>
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold">🧊 Yeti Voice Studio</h1>

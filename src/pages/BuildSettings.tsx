@@ -9,11 +9,16 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Settings, Zap, Code, Rocket, Shield, Database } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const BuildSettings = () => {
+interface BuildSettingsProps {
+  userButton?: ReactNode;
+}
+
+const BuildSettings = ({ userButton }: BuildSettingsProps) => {
   const { toast } = useToast();
   const [buildProgress, setBuildProgress] = useState(0);
   const [isBuilding, setIsBuilding] = useState(false);
@@ -51,7 +56,7 @@ const BuildSettings = () => {
   };
 
   return (
-    <YetiLayout title="Build Settings" icon={Settings}>
+    <YetiLayout title="Build Settings" icon={Settings} userButton={userButton}>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>

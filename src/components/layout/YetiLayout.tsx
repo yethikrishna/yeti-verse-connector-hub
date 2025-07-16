@@ -8,12 +8,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 interface YetiLayoutProps {
   children: ReactNode;
-  title: string;
+  title:string;
   icon: React.ComponentType<{ className?: string }>;
   showBackButton?: boolean;
+  userButton?: ReactNode;
 }
 
-export function YetiLayout({ children, title, icon: Icon, showBackButton = true }: YetiLayoutProps) {
+export function YetiLayout({ children, title, icon: Icon, showBackButton = true, userButton }: YetiLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -83,6 +84,9 @@ export function YetiLayout({ children, title, icon: Icon, showBackButton = true 
               <h1 className="font-semibold text-gray-900 text-sm sm:text-base">{title}</h1>
               <p className="text-xs sm:text-sm text-gray-500">Yeti AI v18.0</p>
             </div>
+          </div>
+          <div className="ml-auto">
+            {userButton}
           </div>
         </div>
       </div>

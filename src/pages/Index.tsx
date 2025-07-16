@@ -6,7 +6,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 type View = 'chat' | 'connections';
 
-const Index = () => {
+import { ReactNode } from "react";
+
+interface IndexProps {
+  userButton?: ReactNode;
+}
+
+const Index = ({ userButton }: IndexProps) => {
   const [currentView, setCurrentView] = useState<View>('chat');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -52,7 +58,7 @@ const Index = () => {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         {currentView === 'chat' ? (
-          <YetiChatInterface />
+          <YetiChatInterface userButton={userButton} />
         ) : (
           <div className="flex-1 overflow-auto p-3 sm:p-6">
             <div className="max-w-7xl mx-auto">
