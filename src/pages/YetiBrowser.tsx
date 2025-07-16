@@ -5,16 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Globe, Bookmark, History, Shield, Zap, RefreshCw, ArrowLeft, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface YetiBrowserProps {
-  userButton?: ReactNode;
-}
-
-const YetiBrowser = ({ userButton }: YetiBrowserProps) => {
+const YetiBrowser = () => {
+  const userButton = useUserButton();
   const { toast } = useToast();
   const [url, setUrl] = useState("https://yeti-ai.com");
   const [isLoading, setIsLoading] = useState(false);

@@ -1,12 +1,9 @@
-import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Mic2 } from "lucide-react";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface YetiVocoderProps {
-  userButton?: ReactNode;
-}
-
-const YetiVocoder = ({ userButton }: YetiVocoderProps) => {
+const YetiVocoder = () => {
+  const userButton = useUserButton();
   return (
     <YetiLayout title="Voice Studio" icon={Mic2} userButton={userButton}>
       <div className="space-y-8">

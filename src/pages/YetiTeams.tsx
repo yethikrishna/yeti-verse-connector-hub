@@ -1,12 +1,9 @@
-import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Users } from "lucide-react";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface YetiTeamsProps {
-  userButton?: ReactNode;
-}
-
-const YetiTeams = ({ userButton }: YetiTeamsProps) => {
+const YetiTeams = () => {
+  const userButton = useUserButton();
   return (
     <YetiLayout title="Teams" icon={Users} userButton={userButton}>
       <div className="space-y-8">

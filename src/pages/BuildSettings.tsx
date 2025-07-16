@@ -9,16 +9,13 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Settings, Zap, Code, Rocket, Shield, Database } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface BuildSettingsProps {
-  userButton?: ReactNode;
-}
-
-const BuildSettings = ({ userButton }: BuildSettingsProps) => {
+const BuildSettings = () => {
+  const userButton = useUserButton();
   const { toast } = useToast();
   const [buildProgress, setBuildProgress] = useState(0);
   const [isBuilding, setIsBuilding] = useState(false);

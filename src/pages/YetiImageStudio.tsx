@@ -1,12 +1,9 @@
-import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Image } from "lucide-react";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface YetiImageStudioProps {
-  userButton?: ReactNode;
-}
-
-const YetiImageStudio = ({ userButton }: YetiImageStudioProps) => {
+const YetiImageStudio = () => {
+  const userButton = useUserButton();
   return (
     <YetiLayout title="Image Studio" icon={Image} userButton={userButton}>
       <div className="space-y-8">

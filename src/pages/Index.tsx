@@ -6,13 +6,10 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 type View = 'chat' | 'connections';
 
-import { ReactNode } from "react";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface IndexProps {
-  userButton?: ReactNode;
-}
-
-const Index = ({ userButton }: IndexProps) => {
+const Index = () => {
+  const userButton = useUserButton();
   const [currentView, setCurrentView] = useState<View>('chat');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isMobile = useIsMobile();

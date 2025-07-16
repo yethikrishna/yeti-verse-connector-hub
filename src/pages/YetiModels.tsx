@@ -6,16 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
-import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Brain, Zap, Settings, Activity, TrendingUp, BarChart3 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface YetiModelsProps {
-  userButton?: ReactNode;
-}
-
-const YetiModels = ({ userButton }: YetiModelsProps) => {
+const YetiModels = () => {
+  const userButton = useUserButton();
   const { toast } = useToast();
   const [models] = useState([
     {

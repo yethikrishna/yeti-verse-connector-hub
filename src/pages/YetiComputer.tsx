@@ -5,16 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Computer, Terminal, Folder, FileText, Play, Download, Upload, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface YetiComputerProps {
-  userButton?: ReactNode;
-}
-
-const YetiComputer = ({ userButton }: YetiComputerProps) => {
+const YetiComputer = () => {
+  const userButton = useUserButton();
   const { toast } = useToast();
   const [terminalInput, setTerminalInput] = useState("");
   const [terminalHistory, setTerminalHistory] = useState([

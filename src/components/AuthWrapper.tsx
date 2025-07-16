@@ -1,6 +1,7 @@
 
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
+import { UserButtonProvider } from '@/contexts/UserButtonContext';
 
 interface AuthWrapperProps {
   children: ReactNode;
@@ -27,12 +28,9 @@ export const AuthWrapper = ({ children }: AuthWrapperProps) => {
         </div>
       </SignedOut>
       <SignedIn>
-        {React.Children.map(children, (child) => {
-          if (React.isValidElement(child)) {
-            return React.cloneElement(child, { userButton } as any);
-          }
-          return child;
-        })}
+        <UserButtonProvider userButton={userButton}>
+          {children}
+        </UserButtonProvider>
       </SignedIn>
     </>
   );

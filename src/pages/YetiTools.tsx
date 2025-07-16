@@ -6,17 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { Wrench, Image, Volume2, Code, FileText, Zap, Camera, Mic, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface YetiToolsProps {
-  userButton?: ReactNode;
-}
-
-const YetiTools = ({ userButton }: YetiToolsProps) => {
+const YetiTools = () => {
+  const userButton = useUserButton();
   const { toast } = useToast();
   const [textToSpeech, setTextToSpeech] = useState("");
   const [imagePrompt, setImagePrompt] = useState("");

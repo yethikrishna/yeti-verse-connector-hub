@@ -5,17 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ReactNode } from "react";
 import { YetiLayout } from "@/components/layout/YetiLayout";
 import { WorkflowBuilder } from "@/components/workflow/YetiWorkflowBuilder";
 import { Workflow, Play, Pause, Settings, Zap, GitBranch, Timer, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useUserButton } from "@/contexts/UserButtonContext";
 
-interface YetiWorkflowsProps {
-  userButton?: ReactNode;
-}
-
-const YetiWorkflows = ({ userButton }: YetiWorkflowsProps) => {
+const YetiWorkflows = () => {
+  const userButton = useUserButton();
   const { toast } = useToast();
   const [workflows, setWorkflows] = useState([
     {
