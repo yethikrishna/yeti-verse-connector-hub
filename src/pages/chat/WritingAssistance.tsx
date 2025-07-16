@@ -4,6 +4,7 @@ import { cn } from '@/lib/doubao-utils';
 import { doubaoAnimations } from '@/lib/doubao-animations';
 import { DoubaoMainLayout } from '@/components/doubao/DoubaoMainLayout';
 import { DoubaoHeader } from '@/components/doubao/DoubaoHeader';
+import { useNotifications } from '@/hooks/useNotifications';
 
 interface WritingAssistanceProps {}
 
@@ -44,6 +45,7 @@ export const WritingAssistance: React.FC<WritingAssistanceProps> = () => {
   const [topic, setTopic] = useState('');
   const [additionalRequirements, setAdditionalRequirements] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const { hasNotifications } = useNotifications();
 
   const handleGenerate = async () => {
     if (!topic.trim()) return;
@@ -60,14 +62,14 @@ export const WritingAssistance: React.FC<WritingAssistanceProps> = () => {
       <div className="flex flex-col h-full">
         <DoubaoHeader 
           showSidebarToggle={true}
-          hasNotifications={false}
+          hasNotifications={hasNotifications}
         />
         
         <div className="flex-1 overflow-auto">
           <div className="max-w-4xl mx-auto p-6">
             {/* Header */}
             <motion.div
-              variants={doubaoAnimations.fadeInUp}
+              variants={doubaoAnimations.messageVariants}
               initial="hidden"
               animate="visible"
               className="mb-8"
@@ -85,7 +87,7 @@ export const WritingAssistance: React.FC<WritingAssistanceProps> = () => {
               <div className="lg:col-span-2 space-y-6">
                 {/* Writing Type Selection */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.1 }}
@@ -124,7 +126,7 @@ export const WritingAssistance: React.FC<WritingAssistanceProps> = () => {
 
                 {/* Topic Input */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.2 }}
@@ -163,7 +165,7 @@ export const WritingAssistance: React.FC<WritingAssistanceProps> = () => {
 
                 {/* Settings */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.3 }}
@@ -274,7 +276,7 @@ export const WritingAssistance: React.FC<WritingAssistanceProps> = () => {
 
                 {/* Generate Button */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.4 }}
@@ -306,7 +308,7 @@ export const WritingAssistance: React.FC<WritingAssistanceProps> = () => {
               {/* Preview Panel */}
               <div className="lg:col-span-1">
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.5 }}

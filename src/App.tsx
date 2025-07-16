@@ -37,6 +37,12 @@ import QuestionsAnswers from "./pages/chat/QuestionsAnswers";
 import AIPPTGeneration from "./pages/chat/AIPPTGeneration";
 import WebpageSummary from "./pages/chat/WebpageSummary";
 import VoiceCall from "./pages/chat/VoiceCall";
+import AIPodcast from "./pages/chat/AIPodcast";
+import MeetingRecording from "./pages/chat/MeetingRecording";
+import ScreenSharing from "./pages/chat/ScreenSharing";
+import FurtherResearch from "./pages/chat/FurtherResearch";
+import ProductUpdates from "./pages/ProductUpdates";
+import DoubaoSettings from "./pages/DoubaoSettings";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +84,12 @@ const App = () => (
             <Route path="/chat/ppt" element={<AIPPTGeneration />} />
             <Route path="/chat/webpage-summary" element={<WebpageSummary />} />
             <Route path="/chat/voice-call" element={<VoiceCall />} />
+            <Route path="/chat/podcast" element={<AIPodcast />} />
+            <Route path="/chat/meeting-recording" element={<MeetingRecording />} />
+            <Route path="/chat/screen-sharing" element={<ScreenSharing />} />
+            <Route path="/chat/further-research" element={<FurtherResearch />} />
+            <Route path="/product-updates" element={<ProductUpdates />} />
+            <Route path="/settings" element={<DoubaoSettings />} />
             <Route path="/auth/linkedin/callback" element={<LinkedInCallback />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

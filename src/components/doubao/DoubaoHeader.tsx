@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/doubao-utils';
 import { doubaoAnimations } from '@/lib/doubao-animations';
 
@@ -24,6 +25,15 @@ export const DoubaoHeader: React.FC<DoubaoHeaderProps> = ({
 }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const handleNotificationsClick = () => {
+    if (onNotificationsClick) {
+      onNotificationsClick();
+    } else {
+      navigate('/product-updates');
+    }
+  };
 
   // Handle click outside to close menu
   useEffect(() => {
@@ -109,7 +119,7 @@ export const DoubaoHeader: React.FC<DoubaoHeaderProps> = ({
             initial="rest"
             whileHover="hover"
             whileTap="tap"
-            onClick={onNotificationsClick}
+            onClick={handleNotificationsClick}
             className={cn(
               'relative p-2 rounded-lg hover:bg-doubao-hover',
               'doubao-transition-colors'
@@ -140,7 +150,13 @@ export const DoubaoHeader: React.FC<DoubaoHeaderProps> = ({
             initial="rest"
             whileHover="hover"
             whileTap="tap"
-            onClick={onSettingsClick}
+            onClick={() => {
+              if (onSettingsClick) {
+                onSettingsClick();
+              } else {
+                navigate('/settings');
+              }
+            }}
             className={cn(
               'p-2 rounded-lg hover:bg-doubao-hover',
               'doubao-transition-colors'
@@ -245,7 +261,14 @@ export const DoubaoHeader: React.FC<DoubaoHeaderProps> = ({
                       className="w-full text-left px-3 py-2 rounded-md hover:bg-doubao-hover doubao-transition-colors"
                       whileHover={{ x: 2 }}
                       transition={{ duration: 0.1 }}
-                      onClick={onSettingsClick}
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        if (onSettingsClick) {
+                          onSettingsClick();
+                        } else {
+                          navigate('/settings');
+                        }
+                      }}
                     >
                       <span className="doubao-text-sm text-doubao-text-primary">Settings</span>
                     </motion.button>

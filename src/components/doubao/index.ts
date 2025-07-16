@@ -6,6 +6,7 @@ export { DoubaoMessageBubble, DoubaoMessageList } from './DoubaoMessageBubble';
 export { DoubaoInputArea } from './DoubaoInputArea';
 export { DoubaoTypingIndicator } from './DoubaoTypingIndicator';
 export { DoubaoTestComponent } from './DoubaoTestComponent';
+export { DoubaoSettingsPanel } from './DoubaoSettingsPanel';
 
 // Types
 export type { Message } from './DoubaoMessageBubble';

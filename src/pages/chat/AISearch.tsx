@@ -4,6 +4,7 @@ import { cn } from '@/lib/doubao-utils';
 import { doubaoAnimations } from '@/lib/doubao-animations';
 import { DoubaoMainLayout } from '@/components/doubao/DoubaoMainLayout';
 import { DoubaoHeader } from '@/components/doubao/DoubaoHeader';
+import { useNotifications } from '@/hooks/useNotifications';
 
 interface AISearchProps {}
 
@@ -44,6 +45,7 @@ export const AISearch: React.FC<AISearchProps> = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const { hasNotifications } = useNotifications();
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
@@ -95,14 +97,14 @@ export const AISearch: React.FC<AISearchProps> = () => {
       <div className="flex flex-col h-full">
         <DoubaoHeader 
           showSidebarToggle={true}
-          hasNotifications={false}
+          hasNotifications={hasNotifications}
         />
         
         <div className="flex-1 overflow-auto">
           <div className="max-w-6xl mx-auto p-6">
             {/* Header */}
             <motion.div
-              variants={doubaoAnimations.fadeInUp}
+              variants={doubaoAnimations.messageVariants}
               initial="hidden"
               animate="visible"
               className="mb-8"
@@ -117,7 +119,7 @@ export const AISearch: React.FC<AISearchProps> = () => {
 
             {/* Search Bar */}
             <motion.div
-              variants={doubaoAnimations.fadeInUp}
+              variants={doubaoAnimations.staggerItem}
               initial="hidden"
               animate="visible"
               transition={{ delay: 0.1 }}
@@ -163,7 +165,7 @@ export const AISearch: React.FC<AISearchProps> = () => {
               <div className="lg:col-span-1 space-y-6">
                 {/* Categories */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.2 }}
@@ -204,7 +206,7 @@ export const AISearch: React.FC<AISearchProps> = () => {
 
                 {/* Trending Topics */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.3 }}
@@ -246,7 +248,7 @@ export const AISearch: React.FC<AISearchProps> = () => {
                 {/* Quick Searches */}
                 {!searchResults.length && (
                   <motion.div
-                    variants={doubaoAnimations.fadeInUp}
+                    variants={doubaoAnimations.staggerItem}
                     initial="hidden"
                     animate="visible"
                     transition={{ delay: 0.4 }}
@@ -278,7 +280,7 @@ export const AISearch: React.FC<AISearchProps> = () => {
                 {/* Search Results */}
                 {searchResults.length > 0 && (
                   <motion.div
-                    variants={doubaoAnimations.fadeInUp}
+                    variants={doubaoAnimations.staggerItem}
                     initial="hidden"
                     animate="visible"
                     transition={{ delay: 0.2 }}
@@ -296,7 +298,7 @@ export const AISearch: React.FC<AISearchProps> = () => {
                     {searchResults.map((result, index) => (
                       <motion.div
                         key={result.id}
-                        variants={doubaoAnimations.fadeInUp}
+                        variants={doubaoAnimations.staggerItem}
                         initial="hidden"
                         animate="visible"
                         transition={{ delay: 0.1 * index }}
@@ -341,7 +343,7 @@ export const AISearch: React.FC<AISearchProps> = () => {
 
                 {/* Real-time Updates */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.5 }}
