@@ -35,6 +35,7 @@ import Translation from "./pages/chat/Translation";
 import AcademicSearch from "./pages/chat/AcademicSearch";
 import QuestionsAnswers from "./pages/chat/QuestionsAnswers";
 import AIPPTGeneration from "./pages/chat/AIPPTGeneration";
+import WebpageSummary from "./pages/chat/WebpageSummary";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/chat/academic-search" element={<AcademicSearch />} />
             <Route path="/chat/questions-answers" element={<QuestionsAnswers />} />
             <Route path="/chat/ppt" element={<AIPPTGeneration />} />
+            <Route path="/chat/webpage-summary" element={<WebpageSummary />} />
             <Route path="/auth/linkedin/callback" element={<LinkedInCallback />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

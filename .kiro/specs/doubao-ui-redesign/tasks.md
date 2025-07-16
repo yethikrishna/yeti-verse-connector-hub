@@ -281,7 +281,9 @@
   - Create slide preview and export functionality
   - _Requirements: 1.1, 2.1, 4.1_
 
-- [-] 4.15 Create Webpage Summary feature
+- [x] 4.15 Create Webpage Summary feature
+
+
 
 
   - Build URL input interface for webpage analysis
