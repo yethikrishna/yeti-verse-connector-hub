@@ -140,6 +140,22 @@ export const doubaoAnimations = {
     },
   } as Variants,
 
+  // Fade in up animation (commonly used)
+  fadeInUp: {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+        ease: 'easeOut',
+      },
+    },
+  } as Variants,
+
   // Modal/Dialog animations
   modalVariants: {
     hidden: {
