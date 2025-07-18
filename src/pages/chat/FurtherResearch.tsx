@@ -43,7 +43,7 @@ const FurtherResearch: React.FC = () => {
   const [customTopic, setCustomTopic] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [currentReport, setCurrentReport] = useState<ResearchReport | null>(null);
-  const [selectedSources, setSelectedSources] = useState<string[]>([]);
+
   const [filterCategory, setFilterCategory] = useState<string>('all');
 
   const researchTopics: ResearchTopic[] = [
