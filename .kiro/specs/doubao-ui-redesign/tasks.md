@@ -411,12 +411,14 @@ tion interface
 
   - Add privacy and security settings
 - [ ] 5. Implpt no tettingsfandrconfiguration
+
 ences
   - Create language and region settings
   - Add help and support section links
   - _Requirements: 2.1, 4.1, 4.2_
 
 - [ ] 5. Implement settings and configuration
+
 
 - [ ] 5.1 Create DoubaoSettingsPanel component
 

@@ -93,7 +93,7 @@ export const AIProgramming: React.FC<AIProgrammingProps> = () => {
           <div className="max-w-6xl mx-auto p-6">
             {/* Header */}
             <motion.div
-              variants={doubaoAnimations.fadeInUp}
+              variants={doubaoAnimations.messageVariants}
               initial="hidden"
               animate="visible"
               className="mb-8"
@@ -110,7 +110,7 @@ export const AIProgramming: React.FC<AIProgrammingProps> = () => {
               {/* Task Selection */}
               <div className="xl:col-span-1">
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.1 }}
@@ -154,7 +154,7 @@ export const AIProgramming: React.FC<AIProgrammingProps> = () => {
               <div className="xl:col-span-3 space-y-6">
                 {/* Language Selection */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.2 }}
@@ -191,7 +191,7 @@ export const AIProgramming: React.FC<AIProgrammingProps> = () => {
                 {/* Convert Target Language (only for convert task) */}
                 {selectedTask === 'convert' && (
                   <motion.div
-                    variants={doubaoAnimations.fadeInUp}
+                    variants={doubaoAnimations.staggerItem}
                     initial="hidden"
                     animate="visible"
                     transition={{ delay: 0.25 }}
@@ -228,7 +228,7 @@ export const AIProgramming: React.FC<AIProgrammingProps> = () => {
 
                 {/* Code Input */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.3 }}
@@ -265,7 +265,7 @@ export const AIProgramming: React.FC<AIProgrammingProps> = () => {
 
                 {/* Action Button */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.4 }}
@@ -297,7 +297,7 @@ export const AIProgramming: React.FC<AIProgrammingProps> = () => {
 
                 {/* Quick Examples */}
                 <motion.div
-                  variants={doubaoAnimations.fadeInUp}
+                  variants={doubaoAnimations.staggerItem}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.5 }}
