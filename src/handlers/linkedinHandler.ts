@@ -555,18 +555,3 @@ export class LinkedInHandler extends BasePlatformHandler implements IPlatformHan
 }
 
 export const linkedinHandler = new LinkedInHandler();
-
-  async disconnect(userId: string): Promise<boolean> {
-    try {
-      // Remove stored access token
-      localStorage.removeItem('linkedinAccessToken');
-      // In a real implementation, you might also revoke the token with LinkedIn's API
-      return true;
-    } catch (error) {
-      console.error('Failed to disconnect LinkedIn:', error);
-      return false;
-    }
-  }
-}
-
-export const linkedinHandler = new LinkedInHandler();
