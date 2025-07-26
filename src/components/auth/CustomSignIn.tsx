@@ -3,8 +3,21 @@ import { motion } from 'framer-motion';
 import { useSignIn } from '@clerk/clerk-react';
 import { Eye, EyeOff, Mail, Lock, ArrowLeft, Sparkles } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Landing } from '../Landing';
 
 export const CustomSignIn = () => {
+  // Check if Clerk is available
+  const hasClerkKey = !!((import.meta as { env?: { VITE_CLERK_PUBLISHABLE_KEY?: string } }).env?.VITE_CLERK_PUBLISHABLE_KEY);
+  
+  // If no Clerk key, show landing page
+  if (!hasClerkKey) {
+    return <Landing />;
+  }
+
+  return <CustomSignInForm />;
+};
+
+const CustomSignInForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
