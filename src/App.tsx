@@ -43,6 +43,7 @@ import ScreenSharing from "./pages/chat/ScreenSharing";
 import FurtherResearch from "./pages/chat/FurtherResearch";
 import ProductUpdates from "./pages/ProductUpdates";
 import DoubaoSettings from "./pages/DoubaoSettings";
+import Connections from "./pages/connections";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,7 @@ const App = () => (
             <Route path="/chat/further-research" element={<FurtherResearch />} />
             <Route path="/product-updates" element={<ProductUpdates />} />
             <Route path="/settings" element={<DoubaoSettings />} />
+            <Route path="/connections" element={<Connections />} />
             <Route path="/auth/linkedin/callback" element={<LinkedInCallback />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
