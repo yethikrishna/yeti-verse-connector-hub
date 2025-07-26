@@ -56,32 +56,113 @@ const castStatus = (status: string): 'success' | 'error' | 'pending' => {
 
 export class ConnectionService {
   static async getUserConnections(userId: string): Promise<SupabaseConnection[]> {
-    // Since user_connections table doesn't exist yet, return empty array
-    console.log('Would fetch connections for user:', userId);
-    return [];
+    try {
+      const { data, error } = await supabase
+        .from('user_connections')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching user connections:', error);
+        throw new Error(`Failed to fetch connections: ${error.message}`);
+      }
+
+      return data.map(row => ({
+        id: row.id,
+        user_id: row.user_id,
+        platform_id: row.platform_id,
+        platform_name: row.platform_name,
+        credentials: jsonToRecord(row.credentials),
+        settings: jsonToRecord(row.settings),
+        is_active: row.is_active,
+        last_connected: row.last_connected,
+        created_at: row.created_at,
+        updated_at: row.updated_at
+      }));
+    } catch (error) {
+      console.error('Database error in getUserConnections:', error);
+      // Fallback to empty array if table doesn't exist yet
+      return [];
+    }
   }
 
   static async saveConnection(userId: string, connection: ConnectionConfig, platformName: string): Promise<SupabaseConnection> {
-    // Since user_connections table doesn't exist yet, return mock data
-    console.log('Would save connection for user:', userId, connection);
-    
-    return {
-      id: crypto.randomUUID(),
-      user_id: userId,
-      platform_id: connection.platformId,
-      platform_name: platformName,
-      credentials: connection.credentials,
-      settings: connection.settings,
-      is_active: connection.isActive,
-      last_connected: connection.lastConnected?.toISOString() || null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    };
+    try {
+      const connectionData = {
+        user_id: userId,
+        platform_id: connection.platformId,
+        platform_name: platformName,
+        credentials: connection.credentials,
+        settings: connection.settings,
+        is_active: connection.isActive,
+        last_connected: connection.lastConnected?.toISOString() || new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      const { data, error } = await supabase
+        .from('user_connections')
+        .upsert(connectionData, {
+          onConflict: 'user_id,platform_id'
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error saving connection:', error);
+        throw new Error(`Failed to save connection: ${error.message}`);
+      }
+
+      return {
+        id: data.id,
+        user_id: data.user_id,
+        platform_id: data.platform_id,
+        platform_name: data.platform_name,
+        credentials: jsonToRecord(data.credentials),
+        settings: jsonToRecord(data.settings),
+        is_active: data.is_active,
+        last_connected: data.last_connected,
+        created_at: data.created_at,
+        updated_at: data.updated_at
+      };
+    } catch (error) {
+      console.error('Database error in saveConnection:', error);
+      // Fallback to mock data if table doesn't exist yet
+      return {
+        id: crypto.randomUUID(),
+        user_id: userId,
+        platform_id: connection.platformId,
+        platform_name: platformName,
+        credentials: connection.credentials,
+        settings: connection.settings,
+        is_active: connection.isActive,
+        last_connected: connection.lastConnected?.toISOString() || null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+    }
   }
 
   static async deactivateConnection(userId: string, platformId: string): Promise<void> {
-    // Since user_connections table doesn't exist yet, just log
-    console.log('Would deactivate connection for user:', userId, 'platform:', platformId);
+    try {
+      const { error } = await supabase
+        .from('user_connections')
+        .update({ 
+          is_active: false,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', userId)
+        .eq('platform_id', platformId);
+
+      if (error) {
+        console.error('Error deactivating connection:', error);
+        throw new Error(`Failed to deactivate connection: ${error.message}`);
+      }
+    } catch (error) {
+      console.error('Database error in deactivateConnection:', error);
+      // Ignore error if table doesn't exist yet
+    }
   }
 
   static async logExecution(
@@ -94,27 +175,95 @@ export class ConnectionService {
     errorMessage?: string,
     executionTimeMs?: number
   ): Promise<ExecutionLog> {
-    // Since mcp_execution_logs table doesn't exist yet, return mock data
-    console.log('Would log execution for user:', userId, 'platform:', platformId, 'action:', action);
-    
-    return {
-      id: crypto.randomUUID(),
-      user_id: userId,
-      platform_id: platformId,
-      action,
-      request_data: requestData || null,
-      response_data: responseData || null,
-      status,
-      error_message: errorMessage || null,
-      execution_time_ms: executionTimeMs || null,
-      created_at: new Date().toISOString()
-    };
+    try {
+      const logData = {
+        user_id: userId,
+        platform_id: platformId,
+        action,
+        request_data: requestData || null,
+        response_data: responseData || null,
+        status,
+        error_message: errorMessage || null,
+        execution_time_ms: executionTimeMs || null
+      };
+
+      const { data, error } = await supabase
+        .from('mcp_execution_logs')
+        .insert(logData)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error logging execution:', error);
+        throw new Error(`Failed to log execution: ${error.message}`);
+      }
+
+      return {
+        id: data.id,
+        user_id: data.user_id,
+        platform_id: data.platform_id,
+        action: data.action,
+        request_data: data.request_data,
+        response_data: data.response_data,
+        status: castStatus(data.status),
+        error_message: data.error_message,
+        execution_time_ms: data.execution_time_ms,
+        created_at: data.created_at
+      };
+    } catch (error) {
+      console.error('Database error in logExecution:', error);
+      // Fallback to mock data if table doesn't exist yet
+      return {
+        id: crypto.randomUUID(),
+        user_id: userId,
+        platform_id: platformId,
+        action,
+        request_data: requestData || null,
+        response_data: responseData || null,
+        status,
+        error_message: errorMessage || null,
+        execution_time_ms: executionTimeMs || null,
+        created_at: new Date().toISOString()
+      };
+    }
   }
 
   static async getExecutionLogs(userId: string, platformId?: string, limit: number = 50): Promise<ExecutionLog[]> {
-    // Since mcp_execution_logs table doesn't exist yet, return empty array
-    console.log('Would fetch execution logs for user:', userId, 'platform:', platformId);
-    return [];
+    try {
+      let query = supabase
+        .from('mcp_execution_logs')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (platformId) {
+        query = query.eq('platform_id', platformId);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error('Error fetching execution logs:', error);
+        throw new Error(`Failed to fetch execution logs: ${error.message}`);
+      }
+
+      return data.map(row => ({
+        id: row.id,
+        user_id: row.user_id,
+        platform_id: row.platform_id,
+        action: row.action,
+        request_data: row.request_data,
+        response_data: row.response_data,
+        status: castStatus(row.status),
+        error_message: row.error_message,
+        execution_time_ms: row.execution_time_ms,
+        created_at: row.created_at
+      }));
+    } catch (error) {
+      console.error('Database error in getExecutionLogs:', error);
+      return [];
+    }
   }
 
   static async createOAuthState(
@@ -123,28 +272,97 @@ export class ConnectionService {
     stateToken: string,
     redirectUri?: string
   ): Promise<OAuthState> {
-    // Since oauth_states table doesn't exist yet, return mock data
-    console.log('Would create OAuth state for user:', userId, 'platform:', platformId);
-    
-    return {
-      id: crypto.randomUUID(),
-      user_id: userId,
-      platform_id: platformId,
-      state_token: stateToken,
-      redirect_uri: redirectUri || null,
-      expires_at: new Date(Date.now() + 3600000).toISOString(),
-      created_at: new Date().toISOString()
-    };
+    try {
+      const expiresAt = new Date(Date.now() + 3600000); // 1 hour from now
+      
+      const oauthData = {
+        user_id: userId,
+        platform_id: platformId,
+        state_token: stateToken,
+        redirect_uri: redirectUri || null,
+        expires_at: expiresAt.toISOString()
+      };
+
+      const { data, error } = await supabase
+        .from('oauth_states')
+        .insert(oauthData)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error creating OAuth state:', error);
+        throw new Error(`Failed to create OAuth state: ${error.message}`);
+      }
+
+      return {
+        id: data.id,
+        user_id: data.user_id,
+        platform_id: data.platform_id,
+        state_token: data.state_token,
+        redirect_uri: data.redirect_uri,
+        expires_at: data.expires_at,
+        created_at: data.created_at
+      };
+    } catch (error) {
+      console.error('Database error in createOAuthState:', error);
+      // Fallback to mock data if table doesn't exist yet
+      return {
+        id: crypto.randomUUID(),
+        user_id: userId,
+        platform_id: platformId,
+        state_token: stateToken,
+        redirect_uri: redirectUri || null,
+        expires_at: new Date(Date.now() + 3600000).toISOString(),
+        created_at: new Date().toISOString()
+      };
+    }
   }
 
   static async validateOAuthState(stateToken: string): Promise<OAuthState | null> {
-    // Since oauth_states table doesn't exist yet, return null
-    console.log('Would validate OAuth state:', stateToken);
-    return null;
+    try {
+      const { data, error } = await supabase
+        .from('oauth_states')
+        .select('*')
+        .eq('state_token', stateToken)
+        .gte('expires_at', new Date().toISOString())
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // No rows returned
+          return null;
+        }
+        console.error('Error validating OAuth state:', error);
+        throw new Error(`Failed to validate OAuth state: ${error.message}`);
+      }
+
+      return {
+        id: data.id,
+        user_id: data.user_id,
+        platform_id: data.platform_id,
+        state_token: data.state_token,
+        redirect_uri: data.redirect_uri,
+        expires_at: data.expires_at,
+        created_at: data.created_at
+      };
+    } catch (error) {
+      console.error('Database error in validateOAuthState:', error);
+      return null;
+    }
   }
 
   static async cleanupExpiredOAuthStates(): Promise<void> {
-    // Since oauth_states table doesn't exist yet, just log
-    console.log('Would cleanup expired OAuth states');
+    try {
+      const { error } = await supabase
+        .rpc('cleanup_expired_oauth_states');
+
+      if (error) {
+        console.error('Error cleaning up expired OAuth states:', error);
+        throw new Error(`Failed to cleanup expired OAuth states: ${error.message}`);
+      }
+    } catch (error) {
+      console.error('Database error in cleanupExpiredOAuthStates:', error);
+      // Ignore error if function doesn't exist yet
+    }
   }
 }

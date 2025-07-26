@@ -6,9 +6,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthWrapper } from "@/components/AuthWrapper";
 import { DoubaoProgressiveEnhancement, DoubaoFallbackComponent } from "@/components/doubao/DoubaoProgressiveEnhancement";
+import { CustomSignIn } from "@/components/auth/CustomSignIn";
+import { CustomSignUp } from "@/components/auth/CustomSignUp";
+import { LandingDemo } from "@/components/LandingDemo";
+import { SignInDemo } from "@/components/SignInDemo";
+import { SignUpDemo } from "@/components/SignUpDemo";
 import DoubaoChat from "./pages/DoubaoChat";
 import DoubaoPromptTemplates from "./pages/DoubaoPromptTemplates";
 import DoubaoFunctionLibrary from "./pages/DoubaoFunctionLibrary";
+import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BuildSettings from "./pages/BuildSettings";
 import YetiWorkflows from "./pages/YetiWorkflows";
@@ -150,9 +156,23 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AuthWrapper>
-            <AppContent />
-          </AuthWrapper>
+          <Routes>
+            {/* Demo Routes for Showcase */}
+            <Route path="/demo" element={<LandingDemo />} />
+            <Route path="/demo-signin" element={<SignInDemo />} />
+            <Route path="/demo-signup" element={<SignUpDemo />} />
+            
+            {/* Public Auth Routes */}
+            <Route path="/sign-in" element={<CustomSignIn />} />
+            <Route path="/sign-up" element={<CustomSignUp />} />
+            
+            {/* Protected Routes with Doubao UI */}
+            <Route path="/*" element={
+              <AuthWrapper>
+                <AppContent />
+              </AuthWrapper>
+            } />
+          </Routes>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

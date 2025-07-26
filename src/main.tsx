@@ -4,10 +4,10 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import App from './App.tsx'
 import './index.css'
 
-const PUBLISHABLE_KEY = (import.meta as any).env?.VITE_CLERK_PUBLISHABLE_KEY || "pk_test_ZHJpdmVuLXR1cmtleS00LmNsZXJrLmFjY291bnRzLmRldiQ";
+const PUBLISHABLE_KEY = (import.meta as { env?: { VITE_CLERK_PUBLISHABLE_KEY?: string } }).env?.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing Clerk Publishable Key - Please set VITE_CLERK_PUBLISHABLE_KEY in your environment variables");
+  console.warn("Missing Clerk Publishable Key - Please set VITE_CLERK_PUBLISHABLE_KEY in your environment variables");
 }
 
 const rootElement = document.getElementById("root");
@@ -19,33 +19,37 @@ const root = createRoot(rootElement);
 
 root.render(
   <StrictMode>
-    <ClerkProvider 
-      publishableKey={PUBLISHABLE_KEY}
-      afterSignOutUrl="/"
-      appearance={{
-        baseTheme: undefined,
-        variables: {
-          colorPrimary: "#2563eb"
-        }
-      }}
-      localization={{
-        signIn: {
-          start: {
-            title: "Sign in to Yeti",
-            subtitle: "Welcome back! Please sign in to continue"
+    {PUBLISHABLE_KEY ? (
+      <ClerkProvider 
+        publishableKey={PUBLISHABLE_KEY}
+        afterSignOutUrl="/"
+        appearance={{
+          baseTheme: undefined,
+          variables: {
+            colorPrimary: "#2563eb"
           }
-        },
-        signUp: {
-          start: {
-            title: "Create your account", 
-            subtitle: "Welcome! Please fill in the details to get started"
+        }}
+        localization={{
+          signIn: {
+            start: {
+              title: "Sign in to Yeti",
+              subtitle: "Welcome back! Please sign in to continue"
+            }
+          },
+          signUp: {
+            start: {
+              title: "Create your account", 
+              subtitle: "Welcome! Please fill in the details to get started"
+            }
           }
-        }
-      }}
-      telemetry={false}
-      standardBrowser={true}
-    >
+        }}
+        telemetry={false}
+        standardBrowser={true}
+      >
+        <App />
+      </ClerkProvider>
+    ) : (
       <App />
-    </ClerkProvider>
+    )}
   </StrictMode>
 );
