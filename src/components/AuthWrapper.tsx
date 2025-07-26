@@ -8,6 +8,14 @@ interface AuthWrapperProps {
 }
 
 export const AuthWrapper = ({ children }: AuthWrapperProps) => {
+  // Check if we have a Clerk publishable key
+  const hasClerkKey = !!((import.meta as { env?: { VITE_CLERK_PUBLISHABLE_KEY?: string } }).env?.VITE_CLERK_PUBLISHABLE_KEY);
+  
+  // If no Clerk key is available, always show the Landing page
+  if (!hasClerkKey) {
+    return <Landing />;
+  }
+
   return (
     <>
       <SignedOut>
