@@ -114,10 +114,26 @@ export const DoubaoInputArea: React.FC<DoubaoInputAreaProps> = ({
 
   const canSend = inputValue.trim().length > 0 && !disabled && !isLoading;
 
+  // Detect mobile/tablet for responsive behavior
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      setIsTablet(width >= 768 && width < 1024);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   return (
     <div className={cn(
-      'bg-doubao-bg-primary border-t border-doubao-border-light',
-      'p-4 flex-shrink-0',
+      'bg-doubao-bg-primary border-t border-doubao-border-light flex-shrink-0',
+      isMobile ? 'p-3' : 'p-4', // Less padding on mobile
       className
     )}>
       <motion.div
@@ -128,11 +144,11 @@ export const DoubaoInputArea: React.FC<DoubaoInputAreaProps> = ({
         }}
         transition={{ duration: 0.2 }}
         className={cn(
-          'relative flex items-end gap-3 p-3',
-          'bg-doubao-bg-primary border border-doubao-border-light',
-          'rounded-2xl doubao-transition-all',
+          'relative flex items-end border border-doubao-border-light',
+          'bg-doubao-bg-primary rounded-2xl doubao-transition-all',
           isFocused && 'border-doubao-focus',
-          disabled && 'opacity-50 cursor-not-allowed'
+          disabled && 'opacity-50 cursor-not-allowed',
+          isMobile ? 'gap-2 p-2' : 'gap-3 p-3' // Tighter spacing on mobile
         )}
       >
         {/* Attachment Button */}
@@ -145,16 +161,18 @@ export const DoubaoInputArea: React.FC<DoubaoInputAreaProps> = ({
             onClick={() => fileInputRef.current?.click()}
             disabled={disabled}
             className={cn(
-              'flex-shrink-0 p-2 rounded-lg',
+              'flex-shrink-0 rounded-lg touch-manipulation',
               'text-doubao-text-secondary hover:text-doubao-text-primary',
               'hover:bg-doubao-hover doubao-transition-colors',
-              'disabled:cursor-not-allowed disabled:opacity-50'
+              'disabled:cursor-not-allowed disabled:opacity-50',
+              'flex items-center justify-center',
+              isMobile ? 'p-2 min-h-[44px] min-w-[44px]' : 'p-2'
             )}
             title="Attach file"
           >
             <svg
-              width="20"
-              height="20"
+              width={isMobile ? "18" : "20"}
+              height={isMobile ? "18" : "20"}
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -232,17 +250,19 @@ export const DoubaoInputArea: React.FC<DoubaoInputAreaProps> = ({
             onClick={handleVoiceInput}
             disabled={disabled}
             className={cn(
-              'flex-shrink-0 p-2 rounded-lg',
+              'flex-shrink-0 rounded-lg touch-manipulation',
               'text-doubao-text-secondary hover:text-doubao-text-primary',
               'hover:bg-doubao-hover doubao-transition-colors',
               'disabled:cursor-not-allowed disabled:opacity-50',
-              isVoiceRecording && 'text-red-500 bg-red-50'
+              'flex items-center justify-center',
+              isVoiceRecording && 'text-red-500 bg-red-50',
+              isMobile ? 'p-2 min-h-[44px] min-w-[44px]' : 'p-2'
             )}
             title={isVoiceRecording ? "Stop recording" : "Voice input"}
           >
             <motion.svg
-              width="20"
-              height="20"
+              width={isMobile ? "18" : "20"}
+              height={isMobile ? "18" : "20"}
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -269,10 +289,12 @@ export const DoubaoInputArea: React.FC<DoubaoInputAreaProps> = ({
           onClick={handleSend}
           disabled={!canSend}
           className={cn(
-            'flex-shrink-0 p-2 rounded-lg doubao-transition-all',
+            'flex-shrink-0 rounded-lg doubao-transition-all touch-manipulation',
+            'flex items-center justify-center',
             canSend
               ? 'doubao-gradient-blue text-white doubao-shadow-soft'
-              : 'bg-doubao-bg-tertiary text-doubao-text-muted cursor-not-allowed'
+              : 'bg-doubao-bg-tertiary text-doubao-text-muted cursor-not-allowed',
+            isMobile ? 'p-2 min-h-[44px] min-w-[44px]' : 'p-2'
           )}
           title="Send message"
         >

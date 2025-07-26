@@ -33,7 +33,17 @@ import {
   Sun,
   Monitor,
   Save,
-  RotateCcw
+  RotateCcw,
+  ExternalLink,
+  BookOpen,
+  MessageCircle,
+  Mail,
+  Phone,
+  Video,
+  Bug,
+  Lightbulb,
+  Users,
+  Zap
 } from 'lucide-react';
 import { cn } from '@/lib/doubao-utils';
 import { doubaoAnimations } from '@/lib/doubao-animations';
@@ -284,7 +294,7 @@ export const DoubaoSettingsPanel: React.FC<DoubaoSettingsPanelProps> = ({
           transition={{ delay: 0.1 }}
         >
           <Tabs defaultValue="profile" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-7 bg-doubao-bg-primary">
+            <TabsList className="grid w-full grid-cols-8 bg-doubao-bg-primary">
               <TabsTrigger value="profile" className="flex items-center gap-1 text-xs">
                 <User className="h-3 w-3" />
                 Profile
@@ -312,6 +322,10 @@ export const DoubaoSettingsPanel: React.FC<DoubaoSettingsPanelProps> = ({
               <TabsTrigger value="general" className="flex items-center gap-1 text-xs">
                 <Settings className="h-3 w-3" />
                 General
+              </TabsTrigger>
+              <TabsTrigger value="help" className="flex items-center gap-1 text-xs">
+                <HelpCircle className="h-3 w-3" />
+                Help
               </TabsTrigger>
             </TabsList>
 
@@ -715,6 +729,320 @@ export const DoubaoSettingsPanel: React.FC<DoubaoSettingsPanelProps> = ({
                   <div className="flex justify-between text-sm">
                     <span>Build</span>
                     <span className="text-doubao-text-muted">2024.01.15</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Help Tab */}
+            <TabsContent value="help" className="space-y-4">
+              {/* Getting Started */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Zap className="h-4 w-4" />
+                    Getting Started
+                  </CardTitle>
+                  <CardDescription>
+                    New to Doubao? Start here to learn the basics
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Button variant="outline" className="justify-start h-auto p-3" asChild>
+                      <a href="#" className="flex items-start gap-3">
+                        <BookOpen className="h-4 w-4 mt-0.5 text-blue-600" />
+                        <div className="text-left">
+                          <div className="font-medium text-sm">Quick Start Guide</div>
+                          <div className="text-xs text-doubao-text-muted">Learn the basics in 5 minutes</div>
+                        </div>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="outline" className="justify-start h-auto p-3" asChild>
+                      <a href="#" className="flex items-start gap-3">
+                        <Video className="h-4 w-4 mt-0.5 text-green-600" />
+                        <div className="text-left">
+                          <div className="font-medium text-sm">Video Tutorials</div>
+                          <div className="text-xs text-doubao-text-muted">Step-by-step video guides</div>
+                        </div>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="outline" className="justify-start h-auto p-3" asChild>
+                      <a href="#" className="flex items-start gap-3">
+                        <Lightbulb className="h-4 w-4 mt-0.5 text-yellow-600" />
+                        <div className="text-left">
+                          <div className="font-medium text-sm">Tips & Tricks</div>
+                          <div className="text-xs text-doubao-text-muted">Advanced usage tips</div>
+                        </div>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="outline" className="justify-start h-auto p-3" asChild>
+                      <a href="#" className="flex items-start gap-3">
+                        <FileText className="h-4 w-4 mt-0.5 text-purple-600" />
+                        <div className="text-left">
+                          <div className="font-medium text-sm">Best Practices</div>
+                          <div className="text-xs text-doubao-text-muted">Optimize your workflow</div>
+                        </div>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Documentation */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <BookOpen className="h-4 w-4" />
+                    Documentation
+                  </CardTitle>
+                  <CardDescription>
+                    Comprehensive guides and API references
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="space-y-2">
+                    <Button variant="ghost" className="justify-start w-full" asChild>
+                      <a href="#" className="flex items-center gap-3">
+                        <FileText className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm">User Manual</span>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="ghost" className="justify-start w-full" asChild>
+                      <a href="#" className="flex items-center gap-3">
+                        <Key className="h-4 w-4 text-green-600" />
+                        <span className="text-sm">API Documentation</span>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="ghost" className="justify-start w-full" asChild>
+                      <a href="#" className="flex items-center gap-3">
+                        <Settings className="h-4 w-4 text-orange-600" />
+                        <span className="text-sm">Configuration Guide</span>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="ghost" className="justify-start w-full" asChild>
+                      <a href="#" className="flex items-center gap-3">
+                        <HelpCircle className="h-4 w-4 text-purple-600" />
+                        <span className="text-sm">FAQ</span>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Support */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <MessageCircle className="h-4 w-4" />
+                    Get Support
+                  </CardTitle>
+                  <CardDescription>
+                    Need help? We're here to assist you
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Button variant="outline" className="justify-start h-auto p-3" asChild>
+                      <a href="#" className="flex items-start gap-3">
+                        <MessageCircle className="h-4 w-4 mt-0.5 text-blue-600" />
+                        <div className="text-left">
+                          <div className="font-medium text-sm">Live Chat</div>
+                          <div className="text-xs text-doubao-text-muted">Chat with our support team</div>
+                        </div>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="outline" className="justify-start h-auto p-3" asChild>
+                      <a href="mailto:support@doubao.com" className="flex items-start gap-3">
+                        <Mail className="h-4 w-4 mt-0.5 text-green-600" />
+                        <div className="text-left">
+                          <div className="font-medium text-sm">Email Support</div>
+                          <div className="text-xs text-doubao-text-muted">support@doubao.com</div>
+                        </div>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="outline" className="justify-start h-auto p-3" asChild>
+                      <a href="tel:+1-800-DOUBAO" className="flex items-start gap-3">
+                        <Phone className="h-4 w-4 mt-0.5 text-orange-600" />
+                        <div className="text-left">
+                          <div className="font-medium text-sm">Phone Support</div>
+                          <div className="text-xs text-doubao-text-muted">1-800-DOUBAO</div>
+                        </div>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="outline" className="justify-start h-auto p-3" asChild>
+                      <a href="#" className="flex items-start gap-3">
+                        <Users className="h-4 w-4 mt-0.5 text-purple-600" />
+                        <div className="text-left">
+                          <div className="font-medium text-sm">Community Forum</div>
+                          <div className="text-xs text-doubao-text-muted">Connect with other users</div>
+                        </div>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Troubleshooting */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Bug className="h-4 w-4" />
+                    Troubleshooting
+                  </CardTitle>
+                  <CardDescription>
+                    Common issues and solutions
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="space-y-2">
+                    <Button variant="ghost" className="justify-start w-full" asChild>
+                      <a href="#" className="flex items-center gap-3">
+                        <Bug className="h-4 w-4 text-red-600" />
+                        <span className="text-sm">Report a Bug</span>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="ghost" className="justify-start w-full" asChild>
+                      <a href="#" className="flex items-center gap-3">
+                        <Settings className="h-4 w-4 text-orange-600" />
+                        <span className="text-sm">Connection Issues</span>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="ghost" className="justify-start w-full" asChild>
+                      <a href="#" className="flex items-center gap-3">
+                        <Key className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm">API Key Problems</span>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                    
+                    <Button variant="ghost" className="justify-start w-full" asChild>
+                      <a href="#" className="flex items-center gap-3">
+                        <MessageSquare className="h-4 w-4 text-green-600" />
+                        <span className="text-sm">Chat Not Working</span>
+                        <ExternalLink className="h-3 w-3 ml-auto text-doubao-text-muted" />
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* System Information */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Monitor className="h-4 w-4" />
+                    System Information
+                  </CardTitle>
+                  <CardDescription>
+                    Information about your system for support
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-doubao-text-muted">Version:</span>
+                        <span>v1.0.0</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-doubao-text-muted">Build:</span>
+                        <span>2024.01.15</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-doubao-text-muted">Platform:</span>
+                        <span>Web</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-doubao-text-muted">Browser:</span>
+                        <span>Chrome</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-doubao-text-muted">Language:</span>
+                        <span>{settings.language.toUpperCase()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-doubao-text-muted">Region:</span>
+                        <span>{settings.region.toUpperCase()}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={() => {
+                      const systemInfo = {
+                        version: 'v1.0.0',
+                        build: '2024.01.15',
+                        platform: 'Web',
+                        browser: navigator.userAgent,
+                        language: settings.language,
+                        region: settings.region,
+                        timestamp: new Date().toISOString()
+                      };
+                      navigator.clipboard.writeText(JSON.stringify(systemInfo, null, 2));
+                      toast({
+                        title: "System Info Copied",
+                        description: "System information copied to clipboard",
+                      });
+                    }}>
+                      <FileText className="h-3 w-3 mr-1" />
+                      Copy System Info
+                    </Button>
+                    
+                    <Button variant="outline" size="sm" onClick={() => {
+                      const logs = localStorage.getItem('doubao-logs') || 'No logs available';
+                      const dataStr = `System Info:\n${JSON.stringify({
+                        version: 'v1.0.0',
+                        build: '2024.01.15',
+                        platform: 'Web',
+                        browser: navigator.userAgent,
+                        language: settings.language,
+                        region: settings.region
+                      }, null, 2)}\n\nLogs:\n${logs}`;
+                      const dataBlob = new Blob([dataStr], { type: 'text/plain' });
+                      const url = URL.createObjectURL(dataBlob);
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.download = 'doubao-debug-info.txt';
+                      link.click();
+                      URL.revokeObjectURL(url);
+                      toast({
+                        title: "Debug Info Exported",
+                        description: "Debug information exported for support",
+                      });
+                    }}>
+                      <Download className="h-3 w-3 mr-1" />
+                      Export Debug Info
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

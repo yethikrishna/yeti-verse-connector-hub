@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/doubao-utils';
 import { doubaoAnimations } from '@/lib/doubao-animations';
-import { DoubaoMainLayout } from '@/components/doubao/DoubaoMainLayout';
+
 import { DoubaoHeader } from '@/components/doubao/DoubaoHeader';
 
 interface DocumentChatProps {}
@@ -214,14 +214,13 @@ export const DocumentChat: React.FC<DocumentChatProps> = () => {
   const selectedDoc = documents.find(doc => doc.id === selectedDocument);
 
   return (
-    <DoubaoMainLayout>
-      <div className="flex flex-col h-full">
-        <DoubaoHeader 
-          showSidebarToggle={true}
-          hasNotifications={false}
-        />
-        
-        <div className="flex-1 overflow-hidden">
+    <div className="flex flex-col h-full">
+      <DoubaoHeader 
+        showSidebarToggle={true}
+        hasNotifications={false}
+      />
+      
+      <div className="flex-1 overflow-hidden">
           <div className="h-full flex">
             {/* Left Panel - Document Management */}
             <div className="w-80 border-r border-doubao-border-light bg-doubao-bg-primary flex flex-col">
@@ -600,7 +599,6 @@ export const DocumentChat: React.FC<DocumentChatProps> = () => {
           </div>
         </div>
       </div>
-    </DoubaoMainLayout>
   );
 };
 

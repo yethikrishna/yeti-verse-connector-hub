@@ -26,6 +26,22 @@ export const DoubaoMessageBubble: React.FC<DoubaoMessageBubbleProps> = ({
 }) => {
   const isUser = message.role === 'user';
   const isAI = message.role === 'assistant';
+  
+  // Detect mobile/tablet for responsive behavior
+  const [isMobile, setIsMobile] = React.useState(false);
+  const [isTablet, setIsTablet] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      setIsTablet(width >= 768 && width < 1024);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const formatTimestamp = (timestamp: Date) => {
     const now = new Date();
@@ -82,16 +98,19 @@ export const DoubaoMessageBubble: React.FC<DoubaoMessageBubbleProps> = ({
 
       {/* Message Content Container */}
       <div className={cn(
-        'flex flex-col max-w-[70%]',
+        'flex flex-col',
+        // Responsive max width - wider on mobile for better readability
+        isMobile ? 'max-w-[85%]' : isTablet ? 'max-w-[75%]' : 'max-w-[70%]',
         isUser ? 'items-end' : 'items-start'
       )}>
         {/* Message Bubble */}
         <motion.div
-          whileHover={{ scale: 1.01 }}
+          whileHover={{ scale: isMobile ? 1 : 1.01 }} // Disable hover scale on mobile
           transition={{ duration: 0.15 }}
           className={cn(
-            'px-4 py-3 rounded-2xl relative',
-            'doubao-message-text break-words',
+            'rounded-2xl relative doubao-message-text break-words',
+            // Responsive padding
+            isMobile ? 'px-3 py-2.5' : 'px-4 py-3',
             // User message styling
             isUser && [
               'doubao-gradient-blue text-white',

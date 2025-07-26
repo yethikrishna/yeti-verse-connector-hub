@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/doubao-utils';
 import { doubaoAnimations } from '@/lib/doubao-animations';
-import { DoubaoMainLayout } from '@/components/doubao/DoubaoMainLayout';
+
 import { DoubaoHeader } from '@/components/doubao/DoubaoHeader';
 import { useNotifications } from '@/hooks/useNotifications';
 
@@ -93,14 +93,13 @@ export const AISearch: React.FC<AISearchProps> = () => {
   };
 
   return (
-    <DoubaoMainLayout>
-      <div className="flex flex-col h-full">
-        <DoubaoHeader 
-          showSidebarToggle={true}
-          hasNotifications={hasNotifications}
-        />
-        
-        <div className="flex-1 overflow-auto">
+    <div className="flex flex-col h-full">
+      <DoubaoHeader 
+        showSidebarToggle={true}
+        hasNotifications={hasNotifications}
+      />
+      
+      <div className="flex-1 overflow-auto">
           <div className="max-w-6xl mx-auto p-6">
             {/* Header */}
             <motion.div
@@ -406,7 +405,6 @@ export const AISearch: React.FC<AISearchProps> = () => {
           </div>
         </div>
       </div>
-    </DoubaoMainLayout>
   );
 };
 
