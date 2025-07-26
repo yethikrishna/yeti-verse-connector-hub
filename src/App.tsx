@@ -5,6 +5,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthWrapper } from "@/components/AuthWrapper";
+import { CustomSignIn } from "@/components/auth/CustomSignIn";
+import { CustomSignUp } from "@/components/auth/CustomSignUp";
+import { LandingDemo } from "@/components/LandingDemo";
+import { SignInDemo } from "@/components/SignInDemo";
+import { SignUpDemo } from "@/components/SignUpDemo";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BuildSettings from "./pages/BuildSettings";
@@ -52,48 +57,62 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AuthWrapper>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/build-settings" element={<BuildSettings />} />
-            <Route path="/workflows" element={<YetiWorkflows />} />
-            <Route path="/tools" element={<YetiTools />} />
-            <Route path="/models" element={<YetiModels />} />
-            <Route path="/security" element={<YetiSecurity />} />
-            <Route path="/teams" element={<YetiTeams />} />
-            <Route path="/analytics" element={<YetiAnalytics />} />
-            <Route path="/computer" element={<YetiComputer />} />
-            <Route path="/browser" element={<YetiBrowser />} />
-            <Route path="/vocoder" element={<YetiVocoder />} />
-            <Route path="/image-studio" element={<YetiImageStudio />} />
-            <Route path="/studio" element={<YetiStudio />} />
-            <Route path="/system-test" element={<SystemTest />} />
-            <Route path="/chat/write" element={<WritingAssistance />} />
-            <Route path="/chat/coding" element={<AIProgramming />} />
-            <Route path="/chat/search" element={<AISearch />} />
-            <Route path="/chat/create-image" element={<ImageGeneration />} />
-            <Route path="/chat/chat-with-doc" element={<DocumentChat />} />
-            <Route path="/chat/pc-ai-guidance" element={<PCAIGuidance />} />
-            <Route path="/chat/bot/discover" element={<BotDiscovery />} />
-            <Route path="/chat/drive/" element={<DataStorageAnalysis />} />
-            <Route path="/chat/music" element={<MusicGeneration />} />
-            <Route path="/chat/video" element={<VideoGeneration />} />
-            <Route path="/chat/translate" element={<Translation />} />
-            <Route path="/chat/academic-search" element={<AcademicSearch />} />
-            <Route path="/chat/questions-answers" element={<QuestionsAnswers />} />
-            <Route path="/chat/ppt" element={<AIPPTGeneration />} />
-            <Route path="/chat/webpage-summary" element={<WebpageSummary />} />
-            <Route path="/chat/voice-call" element={<VoiceCall />} />
-            <Route path="/chat/podcast" element={<AIPodcast />} />
-            <Route path="/chat/meeting-recording" element={<MeetingRecording />} />
-            <Route path="/chat/screen-sharing" element={<ScreenSharing />} />
-            <Route path="/chat/further-research" element={<FurtherResearch />} />
-            <Route path="/product-updates" element={<ProductUpdates />} />
-            <Route path="/settings" element={<DoubaoSettings />} />
-            <Route path="/auth/linkedin/callback" element={<LinkedInCallback />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthWrapper>
+        <Routes>
+          {/* Demo Routes for Showcase */}
+          <Route path="/demo" element={<LandingDemo />} />
+          <Route path="/demo-signin" element={<SignInDemo />} />
+          <Route path="/demo-signup" element={<SignUpDemo />} />
+          
+          {/* Public Auth Routes */}
+          <Route path="/sign-in" element={<CustomSignIn />} />
+          <Route path="/sign-up" element={<CustomSignUp />} />
+          
+          {/* Protected Routes */}
+          <Route path="/*" element={
+            <AuthWrapper>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/build-settings" element={<BuildSettings />} />
+                <Route path="/workflows" element={<YetiWorkflows />} />
+                <Route path="/tools" element={<YetiTools />} />
+                <Route path="/models" element={<YetiModels />} />
+                <Route path="/security" element={<YetiSecurity />} />
+                <Route path="/teams" element={<YetiTeams />} />
+                <Route path="/analytics" element={<YetiAnalytics />} />
+                <Route path="/computer" element={<YetiComputer />} />
+                <Route path="/browser" element={<YetiBrowser />} />
+                <Route path="/vocoder" element={<YetiVocoder />} />
+                <Route path="/image-studio" element={<YetiImageStudio />} />
+                <Route path="/studio" element={<YetiStudio />} />
+                <Route path="/system-test" element={<SystemTest />} />
+                <Route path="/chat/write" element={<WritingAssistance />} />
+                <Route path="/chat/coding" element={<AIProgramming />} />
+                <Route path="/chat/search" element={<AISearch />} />
+                <Route path="/chat/create-image" element={<ImageGeneration />} />
+                <Route path="/chat/chat-with-doc" element={<DocumentChat />} />
+                <Route path="/chat/pc-ai-guidance" element={<PCAIGuidance />} />
+                <Route path="/chat/bot/discover" element={<BotDiscovery />} />
+                <Route path="/chat/drive/" element={<DataStorageAnalysis />} />
+                <Route path="/chat/music" element={<MusicGeneration />} />
+                <Route path="/chat/video" element={<VideoGeneration />} />
+                <Route path="/chat/translate" element={<Translation />} />
+                <Route path="/chat/academic-search" element={<AcademicSearch />} />
+                <Route path="/chat/questions-answers" element={<QuestionsAnswers />} />
+                <Route path="/chat/ppt" element={<AIPPTGeneration />} />
+                <Route path="/chat/webpage-summary" element={<WebpageSummary />} />
+                <Route path="/chat/voice-call" element={<VoiceCall />} />
+                <Route path="/chat/podcast" element={<AIPodcast />} />
+                <Route path="/chat/meeting-recording" element={<MeetingRecording />} />
+                <Route path="/chat/screen-sharing" element={<ScreenSharing />} />
+                <Route path="/chat/further-research" element={<FurtherResearch />} />
+                <Route path="/product-updates" element={<ProductUpdates />} />
+                <Route path="/settings" element={<DoubaoSettings />} />
+                <Route path="/auth/linkedin/callback" element={<LinkedInCallback />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AuthWrapper>
+          } />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
