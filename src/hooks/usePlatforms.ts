@@ -3,6 +3,7 @@ import { Platform, ConnectionConfig, PlatformCategory } from '@/types/platform';
 import { platforms as allPlatforms } from '@/data/platforms';
 import { getPlatformHandler, isPlatformSupported } from '@/handlers/platformHandlers';
 import { supabase } from '@/integrations/supabase/client';
+import { ConnectionService } from '@/lib/supabase/connectionService';
 import { useUser } from '@clerk/clerk-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -66,9 +67,29 @@ export function usePlatforms() {
     if (!user) return;
 
     try {
-      // Since user_connections table doesn't exist yet, fallback to localStorage
-      console.log('Supabase user_connections table not available, using localStorage');
-      loadConnectionsFromLocalStorage();
+      const supabaseConnections = await ConnectionService.getUserConnections(user.id);
+      const connectionConfigs = supabaseConnections.map(conn => ({
+        id: conn.id,
+        platformId: conn.platform_id,
+        credentials: conn.credentials,
+        settings: conn.settings,
+        lastConnected: conn.last_connected ? new Date(conn.last_connected) : undefined,
+        isActive: conn.is_active
+      }));
+      
+      setConnections(connectionConfigs);
+      
+      // Update platform connection status
+      setPlatforms(current => 
+        current.map(platform => ({
+          ...platform,
+          isConnected: connectionConfigs.some(conn => 
+            conn.platformId === platform.id && conn.isActive
+          )
+        }))
+      );
+      
+      console.log(`Loaded ${connectionConfigs.length} connections from Supabase`);
     } catch (error) {
       console.error('Error loading connections from Supabase:', error);
       // Fallback to localStorage
@@ -155,19 +176,34 @@ export function usePlatforms() {
     if (!user) return;
 
     try {
-      // Since user_connections table doesn't exist yet, save to localStorage
-      console.log('Supabase user_connections table not available, using localStorage');
+      const platform = platforms.find(p => p.id === connection.platformId);
+      const platformName = platform?.name || connection.platformId;
+      
+      await ConnectionService.saveConnection(user.id, connection, platformName);
+      
+      // Update local state
+      const updatedConnections = [...connections.filter(c => c.platformId !== connection.platformId), connection];
+      setConnections(updatedConnections);
+      
+      // Also save to localStorage as backup
+      localStorage.setItem('yeti-connections', JSON.stringify(updatedConnections));
+
+      toast({
+        title: "Connection Saved",
+        description: `Your ${platformName} connection has been saved successfully.`,
+      });
+    } catch (error) {
+      console.error('Error saving connection to Supabase:', error);
+      // Fallback to localStorage only
       const updatedConnections = [...connections.filter(c => c.platformId !== connection.platformId), connection];
       setConnections(updatedConnections);
       localStorage.setItem('yeti-connections', JSON.stringify(updatedConnections));
 
       toast({
-        title: "Connection Saved",
-        description: "Your platform connection has been stored locally.",
+        title: "Connection Saved Locally",
+        description: "Your connection has been stored locally as a fallback.",
+        variant: "default"
       });
-    } catch (error) {
-      console.error('Error saving connection:', error);
-      throw error;
     }
   };
 
@@ -187,9 +223,14 @@ export function usePlatforms() {
       }
     }
 
-    // Since user_connections table doesn't exist yet, just update localStorage
+    // Deactivate connection in Supabase
     if (user) {
-      console.log('Supabase user_connections table not available, using localStorage');
+      try {
+        await ConnectionService.deactivateConnection(user.id, platformId);
+        console.log(`Deactivated ${platformId} connection in Supabase`);
+      } catch (error) {
+        console.error('Error deactivating connection in Supabase:', error);
+      }
     }
 
     // Update local state
@@ -230,8 +271,17 @@ export function usePlatforms() {
     if (!user) return;
 
     try {
-      // Since mcp_execution_logs table doesn't exist yet, just log to console
-      console.log('Execution log:', { platformId, action, status, errorMessage, executionTimeMs });
+      await ConnectionService.logExecution(
+        user.id,
+        platformId,
+        action,
+        requestData,
+        responseData,
+        status,
+        errorMessage,
+        executionTimeMs
+      );
+      console.log(`Logged execution for ${platformId}: ${action} - ${status}`);
     } catch (error) {
       console.error('Error logging execution:', error);
     }

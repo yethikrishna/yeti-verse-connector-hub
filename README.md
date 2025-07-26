@@ -59,7 +59,64 @@ A4F_API_KEY=your_a4f_key
 
 **🎉 Your Yeti AI platform is now running at `http://localhost:3000`**
 
-## 🏗️ Architecture
+## 🔗 Platform Connections
+
+### Real API Integrations
+
+Yeti AI now includes **real API implementations** for major platforms:
+
+#### **Social Media**
+- **Twitter/X API v2** - Post tweets, read timelines, search, like, retweet
+- **Facebook Graph API v19** - Create posts, manage pages, upload media, get insights  
+- **LinkedIn API v2** - Share posts, manage company pages, upload media
+- **Instagram Basic Display** - View posts, media, user info
+
+#### **Productivity**
+- **Gmail API v1** - Send/receive emails, search, labels, drafts
+- **Google Drive API v3** - File management, sharing, folder operations
+- **Google Sheets API v4** - Spreadsheet read/write operations
+- **Google Docs API v1** - Document creation and editing
+- **Notion API v1** - Database queries, page creation, block operations
+- **Slack API** - Send messages, manage channels, file uploads
+
+#### **Development**
+- **GitHub API v3** - Repository management, issues, pull requests
+- **GitHub Pages** - Enable/disable, configure deployments
+
+### Database Integration
+
+All platform connections are now stored in **Supabase with RLS**:
+- **user_connections** - Secure credential storage
+- **mcp_execution_logs** - Platform operation logging  
+- **oauth_states** - OAuth flow state management
+
+### Authentication Flow
+
+1. **OAuth 2.0** - Proper authorization flows for each platform
+2. **Token Management** - Secure storage and refresh handling
+3. **Fallback Support** - Graceful degradation to localStorage
+4. **Error Handling** - Comprehensive error messages and recovery
+
+### Setup Platform Connections
+
+```bash
+# 1. Run database migrations
+supabase migration up
+
+# 2. Set up OAuth credentials in Supabase Edge Functions
+# Add these environment variables:
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_secret
+GITHUB_CLIENT_ID=your_github_oauth_client_id
+GITHUB_CLIENT_SECRET=your_github_oauth_secret
+# ... (add more as needed)
+
+# 3. Deploy edge functions
+supabase functions deploy
+
+# 4. Test platform connections in the UI
+npm run dev
+```
 
 ### Frontend
 - **React 18** + **TypeScript** + **Vite**
