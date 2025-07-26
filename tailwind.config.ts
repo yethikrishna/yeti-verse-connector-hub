@@ -18,6 +18,10 @@ export default {
 			}
 		},
 		extend: {
+			perspective: {
+				'1000': '1000px',
+				'2000': '2000px',
+			},
 			fontFamily: {
 				'doubao': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'sans-serif'],
 			},
