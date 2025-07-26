@@ -7,29 +7,13 @@ interface AuthWrapperProps {
 }
 
 export const AuthWrapper = ({ children }: AuthWrapperProps) => {
+  // Temporary bypass for development
   return (
     <>
-      <SignedOut>
-        <div className="min-h-screen flex items-center justify-center bg-slate-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full mx-4">
-            <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Yeti</h1>
-              <p className="text-gray-600 mb-6">Sign in to access your AI assistant and platform connections</p>
-              <SignInButton mode="modal">
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                  Sign In
-                </button>
-              </SignInButton>
-            </div>
-          </div>
-        </div>
-      </SignedOut>
-      <SignedIn>
-        <div className="absolute top-4 right-4 z-50">
-          <UserButton afterSignOutUrl="/" />
-        </div>
-        {children}
-      </SignedIn>
+      <div className="absolute top-4 right-4 z-50">
+        <div className="w-8 h-8 bg-gray-300 rounded-full" />
+      </div>
+      {children}
     </>
   );
 };
