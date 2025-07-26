@@ -6,81 +6,107 @@
 
 @layer base {
   :root {
-    /* Doubao Base Colors */
-    --background: 0 0% 100%;
-    --foreground: 210 11% 15%;
+    /* Cream Burned White Base Colors */
+    --background: 45 15% 98%;
+    --foreground: 30 8% 20%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 210 11% 15%;
+    --card: 45 20% 99%;
+    --card-foreground: 30 8% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 11% 15%;
+    --popover: 45 20% 99%;
+    --popover-foreground: 30 8% 20%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 35 25% 25%;
+    --primary-foreground: 45 20% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 40 20% 96%;
+    --secondary-foreground: 35 25% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 40 15% 94%;
+    --muted-foreground: 30 8% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 42 18% 95%;
+    --accent-foreground: 35 25% 25%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 45 20% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 40 12% 88%;
+    --input: 40 12% 88%;
+    --ring: 35 25% 25%;
 
     --radius: 0.5rem;
 
-    /* Doubao Specific Colors */
-    --doubao-primary-blue: 214 100% 59%;
-    --doubao-primary-blue-dark: 214 100% 45%;
-    --doubao-secondary-blue: 214 100% 85%;
-    --doubao-purple: 258 90% 66%;
-    --doubao-purple-light: 258 90% 85%;
+    /* Cream Burned White Specific Colors */
+    --cream-primary: 35 25% 25%;
+    --cream-primary-light: 35 25% 35%;
+    --cream-secondary: 40 15% 85%;
+    --cream-accent: 45 30% 65%;
+    --cream-accent-light: 45 30% 80%;
     
-    /* Doubao Background Colors */
-    --doubao-bg-primary: 0 0% 100%;
-    --doubao-bg-secondary: 210 17% 98%;
-    --doubao-bg-tertiary: 210 17% 95%;
-    --doubao-bg-sidebar: 210 17% 98%;
+    /* Cream Background Colors */
+    --cream-bg-primary: 45 15% 98%;
+    --cream-bg-secondary: 42 12% 96%;
+    --cream-bg-tertiary: 40 10% 94%;
+    --cream-bg-sidebar: 42 12% 96%;
+    --cream-bg-overlay: 45 20% 99%;
     
-    /* Doubao Text Colors */
-    --doubao-text-primary: 210 11% 15%;
-    --doubao-text-secondary: 210 9% 31%;
-    --doubao-text-tertiary: 210 8% 50%;
-    --doubao-text-muted: 210 8% 65%;
+    /* Cream Text Colors */
+    --cream-text-primary: 30 8% 20%;
+    --cream-text-secondary: 30 6% 35%;
+    --cream-text-tertiary: 30 5% 55%;
+    --cream-text-muted: 30 4% 70%;
     
-    /* Doubao Message Bubble Colors */
-    --doubao-user-bubble: 214 100% 59%;
-    --doubao-user-bubble-dark: 214 100% 45%;
-    --doubao-ai-bubble: 210 17% 95%;
-    --doubao-ai-bubble-text: 210 11% 15%;
+    /* Cream Message Bubble Colors */
+    --cream-user-bubble: 35 25% 25%;
+    --cream-user-bubble-light: 35 25% 35%;
+    --cream-ai-bubble: 40 10% 94%;
+    --cream-ai-bubble-text: 30 8% 20%;
     
-    /* Doubao Border Colors */
-    --doubao-border-light: 210 17% 90%;
-    --doubao-border-medium: 210 17% 85%;
-    --doubao-border-strong: 210 17% 75%;
+    /* Cream Border Colors */
+    --cream-border-light: 40 8% 85%;
+    --cream-border-medium: 35 6% 75%;
+    --cream-border-strong: 30 8% 65%;
     
-    /* Doubao Interactive Colors */
-    --doubao-hover: 210 17% 92%;
-    --doubao-active: 210 17% 88%;
-    --doubao-focus: 214 100% 59%;
+    /* Cream Interactive Colors */
+    --cream-hover: 42 12% 92%;
+    --cream-active: 40 10% 88%;
+    --cream-focus: 35 25% 25%;
     
     /* Sidebar specific colors */
-    --sidebar-background: 210 17% 98%;
-    --sidebar-foreground: 210 11% 15%;
-    --sidebar-primary: 214 100% 59%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 17% 95%;
-    --sidebar-accent-foreground: 210 11% 15%;
-    --sidebar-border: 210 17% 90%;
-    --sidebar-ring: 214 100% 59%;
+    --sidebar-background: 42 12% 96%;
+    --sidebar-foreground: 30 8% 20%;
+    --sidebar-primary: 35 25% 25%;
+    --sidebar-primary-foreground: 45 20% 98%;
+    --sidebar-accent: 40 10% 94%;
+    --sidebar-accent-foreground: 30 8% 20%;
+    --sidebar-border: 40 8% 85%;
+    --sidebar-ring: 35 25% 25%;
+
+    /* Legacy Doubao aliases for compatibility */
+    --doubao-primary-blue: 35 25% 25%;
+    --doubao-primary-blue-dark: 35 25% 20%;
+    --doubao-secondary-blue: 40 15% 85%;
+    --doubao-purple: 35 30% 45%;
+    --doubao-purple-light: 40 25% 75%;
+    --doubao-bg-primary: 45 15% 98%;
+    --doubao-bg-secondary: 42 12% 96%;
+    --doubao-bg-tertiary: 40 10% 94%;
+    --doubao-bg-sidebar: 42 12% 96%;
+    --doubao-text-primary: 30 8% 20%;
+    --doubao-text-secondary: 30 6% 35%;
+    --doubao-text-tertiary: 30 5% 55%;
+    --doubao-text-muted: 30 4% 70%;
+    --doubao-user-bubble: 35 25% 25%;
+    --doubao-user-bubble-dark: 35 25% 20%;
+    --doubao-ai-bubble: 40 10% 94%;
+    --doubao-ai-bubble-text: 30 8% 20%;
+    --doubao-border-light: 40 8% 85%;
+    --doubao-border-medium: 35 6% 75%;
+    --doubao-border-strong: 30 8% 65%;
+    --doubao-hover: 42 12% 92%;
+    --doubao-active: 40 10% 88%;
+    --doubao-focus: 35 25% 25%;
   }
 
   .dark {
@@ -132,6 +158,33 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    cursor: none; /* Hide default cursor */
+    overflow-x: hidden;
+  }
+
+  /* Hide cursor on all interactive elements */
+  button, a, input, textarea, select, [role="button"], [tabindex] {
+    cursor: none !important;
+  }
+
+  /* Custom scrollbar for cream theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--cream-bg-tertiary));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--cream-border-medium));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--cream-border-strong));
   }
 }
 
@@ -212,95 +265,110 @@
     color: hsl(var(--doubao-text-primary));
   }
 }
-/* Douba
-o Animation Utilities */
+/* Cream-themed Animation Utilities */
 @layer utilities {
-  .doubao-transition-colors {
+  .cream-transition-colors {
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
   }
   
-  .doubao-transition-transform {
+  .cream-transition-transform {
     transition: transform 0.15s ease-in-out;
   }
   
-  .doubao-transition-all {
+  .cream-transition-all {
     transition: all 0.15s ease-in-out;
   }
   
-  .doubao-hover-scale:hover {
+  .cream-hover-scale:hover {
     transform: scale(1.02);
   }
   
-  .doubao-hover-lift:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  .cream-hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
   }
   
-  .doubao-focus-ring:focus {
+  .cream-focus-ring:focus {
     outline: none;
-    box-shadow: 0 0 0 2px hsl(var(--doubao-focus));
+    box-shadow: 0 0 0 3px hsl(var(--cream-focus) / 0.3);
   }
   
-  .doubao-message-enter {
-    animation: doubao-fade-in 0.3s ease-out forwards;
+  .cream-message-enter {
+    animation: cream-fade-in 0.4s ease-out forwards;
   }
   
-  .doubao-sidebar-item-enter {
-    animation: doubao-slide-in-left 0.2s ease-out forwards;
+  .cream-sidebar-item-enter {
+    animation: cream-slide-in-left 0.3s ease-out forwards;
   }
   
-  .doubao-typing-indicator {
-    animation: doubao-typing-dots 1.4s infinite ease-in-out;
+  .cream-typing-indicator {
+    animation: cream-typing-dots 1.4s infinite ease-in-out;
   }
   
-  .doubao-typing-indicator:nth-child(2) {
+  .cream-typing-indicator:nth-child(2) {
     animation-delay: 0.2s;
   }
   
-  .doubao-typing-indicator:nth-child(3) {
+  .cream-typing-indicator:nth-child(3) {
     animation-delay: 0.4s;
   }
   
-  .doubao-shimmer-bg {
+  .cream-shimmer-bg {
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.4),
+      hsl(var(--cream-accent-light) / 0.4),
       transparent
     );
     background-size: 200% 100%;
-    animation: doubao-shimmer 2s linear infinite;
+    animation: cream-shimmer 2s linear infinite;
   }
   
-  .doubao-gradient-blue {
-    background: linear-gradient(135deg, hsl(var(--doubao-primary-blue)), hsl(var(--doubao-primary-blue-dark)));
+  .cream-gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--cream-primary)), hsl(var(--cream-primary-light)));
   }
   
-  .doubao-gradient-purple {
-    background: linear-gradient(135deg, hsl(var(--doubao-purple)), hsl(var(--doubao-primary-blue)));
+  .cream-gradient-accent {
+    background: linear-gradient(135deg, hsl(var(--cream-accent)), hsl(var(--cream-accent-light)));
   }
   
-  .doubao-glass-effect {
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  .cream-glass-effect {
+    backdrop-filter: blur(12px);
+    background: hsl(var(--cream-bg-overlay) / 0.85);
+    border: 1px solid hsl(var(--cream-border-light) / 0.3);
   }
   
-  .doubao-shadow-soft {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  .cream-shadow-soft {
+    box-shadow: 0 2px 8px hsl(var(--cream-primary) / 0.04);
   }
   
-  .doubao-shadow-medium {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  .cream-shadow-medium {
+    box-shadow: 0 4px 16px hsl(var(--cream-primary) / 0.08);
   }
   
-  .doubao-shadow-strong {
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  .cream-shadow-strong {
+    box-shadow: 0 8px 32px hsl(var(--cream-primary) / 0.12);
+  }
+
+  .cream-glow {
+    box-shadow: 0 0 20px hsl(var(--cream-accent) / 0.3);
+  }
+
+  .cream-pulse {
+    animation: cream-pulse 2s infinite;
+  }
+
+  .cream-float {
+    animation: cream-float 3s ease-in-out infinite;
+  }
+
+  .cream-slide-up {
+    animation: cream-slide-up 0.5s ease-out forwards;
   }
 }
 
-/* Doubao Keyframe Animations */
-@keyframes doubao-fade-in {
+/* Cream-themed Keyframe Animations */
+@keyframes cream-fade-in {
   from {
     opacity: 0;
     transform: translateY(20px) scale(0.95);
@@ -311,7 +379,7 @@ o Animation Utilities */
   }
 }
 
-@keyframes doubao-slide-in-left {
+@keyframes cream-slide-in-left {
   from {
     opacity: 0;
     transform: translateX(-20px);
@@ -322,7 +390,18 @@ o Animation Utilities */
   }
 }
 
-@keyframes doubao-typing-dots {
+@keyframes cream-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cream-typing-dots {
   0%, 60%, 100% {
     transform: translateY(0);
   }
@@ -331,7 +410,7 @@ o Animation Utilities */
   }
 }
 
-@keyframes doubao-shimmer {
+@keyframes cream-shimmer {
   0% {
     background-position: -200% 0;
   }
@@ -340,7 +419,27 @@ o Animation Utilities */
   }
 }
 
-@keyframes doubao-message-stream {
+@keyframes cream-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes cream-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes cream-message-stream {
   0% {
     opacity: 0;
     transform: translateY(10px);
@@ -351,7 +450,7 @@ o Animation Utilities */
   }
 }
 
-@keyframes doubao-bounce {
+@keyframes cream-bounce {
   0%, 20%, 53%, 80%, 100% {
     transform: translate3d(0, 0, 0);
   }
@@ -366,50 +465,77 @@ o Animation Utilities */
   }
 }
 
-/* Doubao Component Base Styles */
+@keyframes cream-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(var(--cream-accent) / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px hsl(var(--cream-accent) / 0.6), 0 0 30px hsl(var(--cream-accent) / 0.4);
+  }
+}
+
+/* Cream-themed Component Base Styles */
 @layer components {
-  .doubao-button-base {
-    @apply doubao-transition-all doubao-focus-ring;
+  .cream-button-base {
+    @apply cream-transition-all cream-focus-ring;
     @apply px-4 py-2 rounded-lg font-medium;
-    @apply doubao-text-base;
+    @apply text-sm;
   }
   
-  .doubao-button-primary {
-    @apply doubao-button-base doubao-gradient-blue;
-    @apply text-white doubao-hover-scale;
+  .cream-button-primary {
+    @apply cream-button-base cream-gradient-primary;
+    @apply text-white cream-hover-scale cream-shadow-soft;
   }
   
-  .doubao-button-secondary {
-    @apply doubao-button-base;
-    @apply bg-doubao-bg-tertiary text-doubao-text-primary;
-    @apply hover:bg-doubao-hover doubao-hover-scale;
+  .cream-button-secondary {
+    @apply cream-button-base;
+    @apply bg-cream-bg-overlay text-cream-text-primary;
+    @apply hover:bg-cream-hover cream-hover-scale cream-shadow-soft;
+    @apply border border-cream-border-light;
   }
   
-  .doubao-input-base {
-    @apply doubao-transition-colors doubao-focus-ring;
+  .cream-input-base {
+    @apply cream-transition-colors cream-focus-ring;
     @apply px-3 py-2 rounded-lg border;
-    @apply bg-doubao-bg-primary border-doubao-border-light;
-    @apply text-doubao-text-primary doubao-text-base;
-    @apply placeholder:text-doubao-text-muted;
+    @apply bg-cream-bg-primary border-cream-border-light;
+    @apply text-cream-text-primary text-sm;
+    @apply placeholder:text-cream-text-muted;
   }
   
-  .doubao-card-base {
-    @apply bg-doubao-bg-primary rounded-lg;
-    @apply border border-doubao-border-light;
-    @apply doubao-shadow-soft;
+  .cream-card-base {
+    @apply bg-cream-bg-overlay rounded-lg;
+    @apply border border-cream-border-light;
+    @apply cream-shadow-soft cream-transition-all;
   }
   
-  .doubao-message-bubble-user {
-    @apply doubao-gradient-blue text-white;
+  .cream-message-bubble-user {
+    @apply cream-gradient-primary text-white;
     @apply px-4 py-2 rounded-2xl rounded-br-md;
-    @apply doubao-text-base max-w-xs ml-auto;
-    @apply doubao-message-enter;
+    @apply text-sm max-w-xs ml-auto;
+    @apply cream-message-enter cream-shadow-soft;
   }
   
-  .doubao-message-bubble-ai {
-    @apply bg-doubao-ai-bubble text-doubao-ai-bubble-text;
+  .cream-message-bubble-ai {
+    @apply bg-cream-ai-bubble text-cream-ai-bubble-text;
     @apply px-4 py-2 rounded-2xl rounded-bl-md;
-    @apply doubao-text-base max-w-xs mr-auto;
-    @apply doubao-message-enter;
+    @apply text-sm max-w-xs mr-auto;
+    @apply cream-message-enter cream-shadow-soft;
+  }
+
+  .cream-sidebar-item {
+    @apply cream-transition-all rounded-lg p-3 text-sm;
+    @apply text-cream-text-secondary hover:text-cream-text-primary;
+    @apply hover:bg-cream-hover cream-hover-lift;
+    @apply border border-transparent hover:border-cream-border-light;
+  }
+
+  .cream-navbar {
+    @apply bg-cream-bg-overlay border-b border-cream-border-light;
+    @apply cream-glass-effect backdrop-blur-sm;
+  }
+
+  .cream-content-area {
+    @apply bg-cream-bg-primary min-h-screen;
+    @apply text-cream-text-primary;
   }
 }

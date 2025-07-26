@@ -33,32 +33,41 @@ export const LandingDemo = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 relative overflow-hidden">
-      {/* Animated Background Grid */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-cyan-500/10" />
+    <div className="min-h-screen relative overflow-hidden" style={{ 
+      background: `linear-gradient(135deg, hsl(var(--cream-bg-primary)) 0%, hsl(var(--cream-bg-secondary)) 50%, hsl(var(--cream-bg-tertiary)) 100%)`
+    }}>
+      {/* Animated Background Pattern */}
+      <div className="absolute inset-0" style={{
+        background: `radial-gradient(circle at 25% 25%, hsl(var(--cream-accent-light) / 0.1) 0%, transparent 50%), 
+                     radial-gradient(circle at 75% 75%, hsl(var(--cream-accent) / 0.08) 0%, transparent 50%)`
+      }} />
       <div 
-        className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"
+        className="absolute inset-0 opacity-20"
         style={{
-          transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
+          backgroundImage: `linear-gradient(hsl(var(--cream-border-light)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--cream-border-light)) 1px, transparent 1px)`,
+          backgroundSize: '50px 50px',
+          transform: `translate(${mousePosition.x * 0.3}px, ${mousePosition.y * 0.3}px)`,
         }}
       />
 
       {/* Floating Particles */}
       <div className="absolute inset-0">
-        {[...Array(50)].map((_, i) => (
+        {[...Array(30)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
+            className="absolute w-1 h-1 rounded-full"
             style={{
+              background: `hsl(var(--cream-accent) / 0.4)`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             animate={{
-              y: [0, -100, 0],
-              opacity: [0, 1, 0],
+              y: [0, -80, 0],
+              opacity: [0, 0.8, 0],
+              scale: [1, 1.5, 1],
             }}
             transition={{
-              duration: 3 + Math.random() * 4,
+              duration: 4 + Math.random() * 4,
               repeat: Infinity,
               delay: Math.random() * 5,
             }}
@@ -74,15 +83,15 @@ export const LandingDemo = () => {
         transition={{ duration: 0.8 }}
       >
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center cream-gradient-primary cream-shadow-soft">
             <Sparkles className="w-5 h-5 text-white" />
           </div>
-          <span className="text-2xl font-bold text-white">Yeti</span>
+          <span className="text-2xl font-bold" style={{ color: 'hsl(var(--cream-text-primary))' }}>Yeti</span>
         </div>
-        <div className="hidden md:flex items-center space-x-6 text-gray-300">
-          <span className="text-sm">Features</span>
-          <span className="text-sm">About</span>
-          <span className="text-sm">Contact</span>
+        <div className="hidden md:flex items-center space-x-6" style={{ color: 'hsl(var(--cream-text-secondary))' }}>
+          <span className="text-sm hover:text-cream-text-primary transition-colors cursor-pointer">Features</span>
+          <span className="text-sm hover:text-cream-text-primary transition-colors cursor-pointer">About</span>
+          <span className="text-sm hover:text-cream-text-primary transition-colors cursor-pointer">Contact</span>
         </div>
       </motion.header>
 
@@ -97,32 +106,38 @@ export const LandingDemo = () => {
         >
           {/* Founder Badge */}
           <motion.div 
-            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full mb-8"
+            className="inline-flex items-center px-4 py-2 backdrop-blur-sm border rounded-full mb-8 cream-glass-effect"
+            style={{ 
+              background: 'hsl(var(--cream-bg-overlay) / 0.7)',
+              borderColor: 'hsl(var(--cream-border-medium))'
+            }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <Star className="w-4 h-4 text-yellow-400 mr-2" />
-            <span className="text-sm text-gray-300">Founded & Built by</span>
-            <span className="text-sm font-semibold text-blue-400 ml-1">Yethikrishna R</span>
+            <Star className="w-4 h-4 mr-2" style={{ color: 'hsl(var(--cream-accent))' }} />
+            <span className="text-sm" style={{ color: 'hsl(var(--cream-text-secondary))' }}>Founded & Built by</span>
+            <span className="text-sm font-semibold ml-1" style={{ color: 'hsl(var(--cream-primary))' }}>Yethikrishna R</span>
           </motion.div>
 
           {/* Main Heading */}
           <motion.h1 
-            className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+            className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+            style={{ color: 'hsl(var(--cream-text-primary))' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
           >
             The Future of
             <br />
-            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
+            <span className="cream-gradient-primary bg-clip-text text-transparent">
               AI Integration
             </span>
           </motion.h1>
 
           <motion.p 
-            className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed"
+            style={{ color: 'hsl(var(--cream-text-secondary))' }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -139,8 +154,11 @@ export const LandingDemo = () => {
             transition={{ duration: 0.8, delay: 1 }}
           >
             <motion.button 
-              className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-2xl transition-all duration-300 flex items-center min-w-[200px] justify-center"
-              whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)" }}
+              className="group px-8 py-4 text-white font-semibold rounded-xl cream-shadow-medium transition-all duration-300 flex items-center min-w-[200px] justify-center cream-gradient-primary"
+              whileHover={{ 
+                scale: 1.05, 
+                boxShadow: "0 20px 40px hsl(var(--cream-primary) / 0.3)" 
+              }}
               whileTap={{ scale: 0.98 }}
             >
               Get Started Free
@@ -148,8 +166,17 @@ export const LandingDemo = () => {
             </motion.button>
             
             <motion.button 
-              className="px-8 py-4 border-2 border-gray-600 hover:border-blue-500 text-gray-300 hover:text-white font-semibold rounded-xl transition-all duration-300 min-w-[200px]"
-              whileHover={{ scale: 1.05 }}
+              className="px-8 py-4 border-2 font-semibold rounded-xl transition-all duration-300 min-w-[200px]"
+              style={{ 
+                borderColor: 'hsl(var(--cream-border-medium))',
+                color: 'hsl(var(--cream-text-primary))',
+                background: 'hsl(var(--cream-bg-overlay))'
+              }}
+              whileHover={{ 
+                scale: 1.05,
+                borderColor: 'hsl(var(--cream-primary))',
+                boxShadow: "0 8px 25px hsl(var(--cream-primary) / 0.1)"
+              }}
               whileTap={{ scale: 0.98 }}
             >
               Sign In
@@ -163,15 +190,16 @@ export const LandingDemo = () => {
           animate={controls}
           transition={{ type: "spring", stiffness: 100, damping: 30 }}
         >
-          <div className="w-80 h-48 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl transform-gpu">
+          <div className="w-80 h-48 backdrop-blur-lg border rounded-2xl cream-shadow-strong transform-gpu cream-glass-effect"
+               style={{ borderColor: 'hsl(var(--cream-border-light))' }}>
             <div className="p-6 h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-blue-500 rounded-lg" />
-                <div className="text-green-400 text-sm font-semibold">ONLINE</div>
+                <div className="w-8 h-8 rounded-lg cream-gradient-accent" />
+                <div className="text-sm font-semibold" style={{ color: 'hsl(var(--cream-accent))' }}>ONLINE</div>
               </div>
               <div>
-                <div className="text-white font-semibold text-lg mb-2">Yeti Verse Hub</div>
-                <div className="text-gray-400 text-sm">Advanced AI Platform</div>
+                <div className="font-semibold text-lg mb-2" style={{ color: 'hsl(var(--cream-text-primary))' }}>Yeti Verse Hub</div>
+                <div className="text-sm" style={{ color: 'hsl(var(--cream-text-tertiary))' }}>Advanced AI Platform</div>
               </div>
             </div>
           </div>
@@ -189,19 +217,20 @@ export const LandingDemo = () => {
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              className="p-6 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-white/10 rounded-xl"
+              className="p-6 backdrop-blur-sm border rounded-xl cream-glass-effect cream-hover-lift"
+              style={{ borderColor: 'hsl(var(--cream-border-light))' }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.4 + index * 0.1 }}
               whileHover={{ 
                 scale: 1.05, 
-                boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
-                borderColor: "rgba(59, 130, 246, 0.3)"
+                boxShadow: "0 20px 40px hsl(var(--cream-primary) / 0.1)",
+                borderColor: "hsl(var(--cream-primary) / 0.3)"
               }}
             >
-              <feature.icon className="w-8 h-8 text-blue-400 mb-4" />
-              <h3 className="text-white font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-400 text-sm">{feature.desc}</p>
+              <feature.icon className="w-8 h-8 mb-4" style={{ color: 'hsl(var(--cream-primary))' }} />
+              <h3 className="font-semibold mb-2" style={{ color: 'hsl(var(--cream-text-primary))' }}>{feature.title}</h3>
+              <p className="text-sm" style={{ color: 'hsl(var(--cream-text-tertiary))' }}>{feature.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -209,12 +238,13 @@ export const LandingDemo = () => {
 
       {/* Footer */}
       <motion.footer 
-        className="relative z-10 text-center py-8 border-t border-white/10"
+        className="relative z-10 text-center py-8 border-t"
+        style={{ borderColor: 'hsl(var(--cream-border-light))' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 1.6 }}
       >
-        <p className="text-gray-400 text-sm">
+        <p className="text-sm" style={{ color: 'hsl(var(--cream-text-tertiary))' }}>
           © 2024 Yeti Verse Hub. Crafted with ❤️ by Yethikrishna R
         </p>
       </motion.footer>

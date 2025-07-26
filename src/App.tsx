@@ -10,6 +10,8 @@ import { CustomSignUp } from "@/components/auth/CustomSignUp";
 import { LandingDemo } from "@/components/LandingDemo";
 import { SignInDemo } from "@/components/SignInDemo";
 import { SignUpDemo } from "@/components/SignUpDemo";
+import { CursorTrail } from "@/components/cursor/CursorTrail";
+import { FloatingElements } from "@/components/animations/CreamAnimations";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BuildSettings from "./pages/BuildSettings";
@@ -56,6 +58,10 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      {/* Global cursor trail and floating animations */}
+      <CursorTrail />
+      <FloatingElements />
+      
       <BrowserRouter>
         <Routes>
           {/* Demo Routes for Showcase */}

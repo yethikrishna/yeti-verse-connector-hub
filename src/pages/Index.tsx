@@ -24,7 +24,7 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen flex bg-slate-50 relative">
+    <div className="h-screen flex relative" style={{ backgroundColor: 'hsl(var(--cream-bg-primary))' }}>
       {/* Mobile overlay */}
       {isMobile && sidebarOpen && (
         <div 
