@@ -1,325 +1,252 @@
-# 🧊 Yeti AI Platform - Complete AI-Powered Application
+<!--
+SEO Keywords: integration hub, AI platform, React TypeScript, Vite, Supabase, Clerk authentication, Tailwind CSS, shadcn UI, AI chat, image generation, video creation, multi-platform integration, connector hub, AI tools platform
+-->
 
-[![Deploy](https://img.shields.io/badge/Deploy-Ready-brightgreen)](https://your-deployment-url.com)
-[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
-[![AI Powered](https://img.shields.io/badge/AI-Powered-purple)](https://github.com/your-username/yeti-ai)
+<div align="center">
 
-> **Transform your ideas into reality with Yeti AI - A comprehensive AI platform featuring chat, image generation, video creation, and advanced AI tools.**
+# YetiVerse Connector Hub
 
-## 🚀 What is Yeti AI?
+**Integration Hub for YetiVerse AI Platforms — Connect, Orchestrate, Create**
 
-Yeti AI is a **production-ready AI platform** that provides:
+*AI Chat · Image Generation · Video Creation · Multi-Platform Integration · Real-time Sync*
 
-- **🧠 Multi-Model AI Chat** - GPT-4, Claude, Gemini, Llama with automatic fallbacks
-- **🎨 AI Image Generation** - Flux models for stunning artwork
-- **🎬 AI Video Creation** - Minimax for video generation
-- **🎤 Text-to-Speech** - Natural voice synthesis
-- **🧊 Smart Memory** - Persistent conversation history
-- **🔧 AI Tools Suite** - Comprehensive productivity tools
-- **👥 Team Collaboration** - Multi-user support
-- **🔒 Enterprise Security** - Production-grade safety
+[![React 18/19](https://img.shields.io/badge/react-latest-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/typescript-5.x-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/vite-5.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/tailwind-3-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/supabase-database-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
+[![Clerk](https://img.shields.io/badge/clerk-auth-violet?logo=clerk)](https://clerk.com/)
+[![Vitest](https://img.shields.io/badge/vitest-testing-yellow?logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Vercel](https://img.shields.io/badge/vercel-deploy-black?logo=vercel)](https://vercel.com/)
+[![Netlify](https://img.shields.io/badge/netlify-deploy-00C7B7?logo=netlify)](https://netlify.com/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green?logo=opensourceinitiative)](LICENSE)
 
-## ⚡ Quick Start
+<p align="center">
+  <strong>AI Chat</strong> | <strong>Image Generation</strong> | <strong>Video Creation</strong> | <strong>Integrations</strong> | <strong>Authentication</strong>
+</p>
 
-### 1. Environment Setup (2 minutes)
-```bash
-# Clone and setup
-git clone <your-repo>
-cd yeti-ai
-cp .env.example .env.local
-
-# Install dependencies
-npm install  # or bun install
-```
-
-### 2. Configure API Keys (5 minutes)
-Edit `.env.local` with your API keys:
-```env
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_key
-
-# Get these from respective providers:
-OPENAI_API_KEY=your_openai_key
-OPENROUTER_API_KEY=your_openrouter_key
-GEMINI_API_KEY=your_gemini_key
-A4F_API_KEY=your_a4f_key
-```
-
-### 3. Deploy & Run (3 minutes)
-```bash
-# Use the automated deployment script
-./scripts/deploy-yeti.sh full
-
-# Or step by step:
-./scripts/deploy-yeti.sh setup
-./scripts/deploy-yeti.sh functions
-./scripts/deploy-yeti.sh dev
-```
-
-**🎉 Your Yeti AI platform is now running at `http://localhost:3000`**
-
-## 🔗 Platform Connections
-
-### Real API Integrations
-
-Yeti AI now includes **real API implementations** for major platforms:
-
-#### **Social Media**
-- **Twitter/X API v2** - Post tweets, read timelines, search, like, retweet
-- **Facebook Graph API v19** - Create posts, manage pages, upload media, get insights  
-- **LinkedIn API v2** - Share posts, manage company pages, upload media
-- **Instagram Basic Display** - View posts, media, user info
-
-#### **Productivity**
-- **Gmail API v1** - Send/receive emails, search, labels, drafts
-- **Google Drive API v3** - File management, sharing, folder operations
-- **Google Sheets API v4** - Spreadsheet read/write operations
-- **Google Docs API v1** - Document creation and editing
-- **Notion API v1** - Database queries, page creation, block operations
-- **Slack API** - Send messages, manage channels, file uploads
-
-#### **Development**
-- **GitHub API v3** - Repository management, issues, pull requests
-- **GitHub Pages** - Enable/disable, configure deployments
-
-### Database Integration
-
-All platform connections are now stored in **Supabase with RLS**:
-- **user_connections** - Secure credential storage
-- **mcp_execution_logs** - Platform operation logging  
-- **oauth_states** - OAuth flow state management
-
-### Authentication Flow
-
-1. **OAuth 2.0** - Proper authorization flows for each platform
-2. **Token Management** - Secure storage and refresh handling
-3. **Fallback Support** - Graceful degradation to localStorage
-4. **Error Handling** - Comprehensive error messages and recovery
-
-### Setup Platform Connections
-
-```bash
-# 1. Run database migrations
-supabase migration up
-
-# 2. Set up OAuth credentials in Supabase Edge Functions
-# Add these environment variables:
-GOOGLE_CLIENT_ID=your_google_oauth_client_id
-GOOGLE_CLIENT_SECRET=your_google_oauth_secret
-GITHUB_CLIENT_ID=your_github_oauth_client_id
-GITHUB_CLIENT_SECRET=your_github_oauth_secret
-# ... (add more as needed)
-
-# 3. Deploy edge functions
-supabase functions deploy
-
-# 4. Test platform connections in the UI
-npm run dev
-```
-
-### Frontend
-- **React 18** + **TypeScript** + **Vite**
-- **Tailwind CSS** + **Radix UI** components
-- **Clerk** authentication
-- **Supabase** client integration
-
-### Backend
-- **Supabase Edge Functions** (Deno runtime)
-- **PostgreSQL** database
-- **Real-time subscriptions**
-- **Multi-provider AI integration**
-
-### AI Providers
-- **OpenAI** (GPT-4, GPT-4 Turbo, TTS)
-- **OpenRouter** (Claude, Llama, Mixtral)
-- **Google Gemini** (Gemini 1.5 Pro/Flash)
-- **A4F** (Flux image, Minimax video)
-- **Automatic fallbacks** for 99% uptime
-
-## 🎯 Features
-
-### Core AI Features
-- [x] **Multi-model Chat** - 7 AI providers with smart fallbacks
-- [x] **Image Generation** - Flux 1.0 Schnell for instant art
-- [x] **Video Generation** - Minimax for short video clips
-- [x] **Text-to-Speech** - OpenAI TTS with 6 voices
-- [x] **Voice Input** - Speech-to-text for hands-free use
-- [x] **Smart Memory** - Persistent conversation history
-- [x] **Session Management** - Multiple conversation threads
-
-### Advanced Features
-- [x] **Tool Launcher** - 8+ AI-powered productivity tools
-- [x] **Real-time Processing** - Instant AI responses
-- [x] **Mobile Responsive** - Works on all devices
-- [x] **Dark/Light Mode** - Customizable interface
-- [x] **Team Collaboration** - Multi-user support
-- [x] **Usage Analytics** - Performance monitoring
-- [x] **Security Center** - Advanced safety features
-
-## 🔧 Development
-
-### Project Structure
-```
-yeti-ai/
-├── src/
-│   ├── components/     # React components
-│   ├── pages/         # Application pages
-│   ├── hooks/         # Custom React hooks
-│   ├── lib/           # Utilities and helpers
-│   └── integrations/  # API integrations
-├── supabase/
-│   ├── functions/     # Edge functions
-│   └── migrations/    # Database migrations
-├── scripts/           # Deployment scripts
-└── docs/             # Documentation
-```
-
-### Available Scripts
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run lint         # Run ESLint
-npm run type-check   # Check TypeScript
-```
-
-## 🌟 Getting API Keys
-
-### Required API Keys
-1. **OpenAI**: [platform.openai.com](https://platform.openai.com) - For GPT-4 and TTS
-2. **OpenRouter**: [openrouter.ai](https://openrouter.ai) - For Claude, Llama, etc.
-3. **Google Gemini**: [aistudio.google.com](https://aistudio.google.com) - For Gemini models
-4. **A4F**: [a4f.co](https://a4f.co) - For image/video generation
-5. **Clerk**: [clerk.com](https://clerk.com) - For authentication
-6. **Supabase**: [supabase.com](https://supabase.com) - For database/backend
-
-### Optional API Keys
-- **Novita AI**: [novita.ai](https://novita.ai) - Additional AI models
-- **Anthropic**: [anthropic.com](https://anthropic.com) - Direct Claude access
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-```bash
-npm install -g vercel
-vercel --prod
-```
-
-### Netlify
-```bash
-npm run build
-# Upload dist/ folder to Netlify
-```
-
-### Self-Hosted
-```bash
-npm run build
-# Deploy dist/ folder to your server
-```
-
-## 🧪 Testing
-
-### Manual Testing
-1. **Chat**: Send messages and verify AI responses
-2. **Image Gen**: Generate images with various prompts
-3. **Video Gen**: Create short videos (may take 2-3 minutes)
-4. **TTS**: Convert text to speech and download
-5. **Memory**: Check conversation persistence
-
-### Automated Testing
-```bash
-npm run test        # Run unit tests
-npm run test:e2e    # Run end-to-end tests
-```
-
-## 🔍 Troubleshooting
-
-### Common Issues
-
-**Q: Chat not responding?**
-A: Check API keys in Supabase dashboard → Settings → Edge Functions
-
-**Q: Image generation fails?**
-A: Verify A4F API key and account credits
-
-**Q: Functions not found?**
-A: Run `supabase functions deploy` to deploy edge functions
-
-**Q: CORS errors?**
-A: Check Supabase URL and anon key in .env.local
-
-### Debug Mode
-```bash
-# Enable debug logging
-export VITE_DEBUG=true
-npm run dev
-```
-
-## 📊 Performance
-
-### Expected Performance
-- **Chat Response**: 2-5 seconds (with fallbacks)
-- **Image Generation**: 10-30 seconds (1024x1024)
-- **Video Generation**: 60-180 seconds (5-second clips)
-- **TTS Generation**: 2-10 seconds
-- **Memory Operations**: <1 second
-
-### Optimization Tips
-1. Use OpenAI for fastest chat responses
-2. Cache frequently used images/videos
-3. Implement request queuing for high load
-4. Monitor API usage and costs
-
-## 🤝 Contributing
-
-We welcome contributions! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🎯 Roadmap
-
-### Q1 2024
-- [ ] Advanced RAG integration
-- [ ] Custom model fine-tuning
-- [ ] API documentation
-- [ ] Advanced analytics
-
-### Q2 2024
-- [ ] Plugin system
-- [ ] Enterprise features
-- [ ] Multi-language support
-- [ ] Advanced security features
-
-## 🆘 Support
-
-- **Documentation**: [Full Setup Guide](YETI_AI_SETUP_GUIDE.md)
-- **Analysis**: [Technical Analysis](YETI_AI_ANALYSIS_REPORT.md)
-- **Issues**: [GitHub Issues](https://github.com/your-username/yeti-ai/issues)
-
-## 🙏 Acknowledgments
-
-- **OpenAI** for GPT-4 and TTS APIs
-- **Anthropic** for Claude models
-- **Google** for Gemini AI
-- **Supabase** for backend infrastructure
-- **Clerk** for authentication
-- **Vercel** for deployment platform
+</div>
 
 ---
 
-**🧊 Built with Yeti AI Platform** - From concept to production in hours, not months.
+## Overview
 
-### Quick Links
-- [🚀 Setup Guide](YETI_AI_SETUP_GUIDE.md)
-- [📊 Technical Analysis](YETI_AI_ANALYSIS_REPORT.md)
-- [🔧 API Documentation](docs/API.md)
-- [🎯 Deployment Script](scripts/deploy-yeti.sh)
+**YetiVerse Connector Hub** is the central integration hub for YetiVerse platforms — a comprehensive AI-powered application that connects multiple AI services, enabling chat, image generation, video creation, and advanced AI tooling through a unified interface. Built with React, TypeScript, and Vite, the hub leverages Supabase for data persistence, Clerk for authentication, and a rich ecosystem of integrations.
+
+Transform your ideas into reality with a platform that brings together the best AI capabilities in one place — from conversational AI to creative media generation, all connected through a powerful hub architecture.
+
+---
+
+## Features
+
+### AI Capabilities
+- **AI Chat** — Intelligent conversational AI with context awareness
+- **Image Generation** — AI-powered image creation and editing tools
+- **Video Creation** — Video generation and processing capabilities
+- **Advanced AI Tools** — Suite of AI-powered utilities for productivity and creativity
+- **Multi-Model Support** — Connect to multiple AI providers through a unified interface
+
+### Integration Hub
+- **Multi-Platform Connectors** — Pre-built integrations with popular AI services
+- **Real-time Data Sync** — Supabase-powered real-time data synchronization
+- **Webhook Support** — Event-driven integration with external services
+- **API Gateway** — Unified API layer for all connected services
+- **Custom Integrations** — Framework for building your own connectors
+- **Data Handlers** — Modular data processing pipelines
+
+### Authentication & Security
+- **Clerk Authentication** — Secure, modern authentication with social login, MFA, and more
+- **Protected Routes** — Route-level authentication guards
+- **User Management** — Profiles, sessions, and account management
+- **Row Level Security** — Supabase RLS for data isolation
+
+### Frontend & UX
+- **Modern React** — Latest React with hooks and concurrent features
+- **Tailwind CSS** — Utility-first responsive styling
+- **shadcn/ui** — Premium UI components built on Radix UI
+- **Framer Motion Ready** — Animation support for smooth interactions
+- **React Hook Form** — Form handling with validation
+- **Lucide Icons** — Consistent, beautiful iconography
+- **Accessibility** — WCAG-compliant components via Radix UI primitives
+
+### Testing & Quality
+- **Vitest** — Fast unit testing with coverage reports
+- **Accessibility Testing** — Automated a11y test suite
+- **Performance Testing** — Performance benchmark tests
+- **Integration Testing** — End-to-end integration tests
+- **UI Testing** — Component-level test infrastructure
+
+---
+
+## Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| Framework | React 18/19 |
+| Language | TypeScript 5.x |
+| Build Tool | Vite 5 |
+| Styling | Tailwind CSS 3, PostCSS |
+| UI Components | shadcn/ui, Radix UI |
+| Backend/Database | Supabase |
+| Authentication | Clerk |
+| Testing | Vitest (unit, a11y, performance, integration) |
+| Forms | React Hook Form + Zod |
+| Icons | Lucide React |
+| Deployment | Vercel, Netlify |
+| Development | Nix (dev.nix) |
+| Code Quality | ESLint, Prettier |
+| License | MIT |
+
+---
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js >= 18
+- npm or pnpm
+- Supabase account (free tier available)
+- Clerk account (free tier available)
+
+### Installation
+
+```bash
+git clone https://github.com/yethikrishna/yeti-verse-connector-hub.git
+cd yeti-verse-connector-hub
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Add your Supabase URL, anon key, Clerk publishable key, etc.
+
+# Start development server
+npm run dev
+```
+
+### Available Scripts
+
+```bash
+npm run dev              # Start dev server on port 3000
+npm run build            # Build for production
+npm run build:dev        # Build in development mode
+npm run preview          # Preview production build
+npm run lint             # Run ESLint
+npm run test             # Run Vitest tests
+npm run test:run         # Run tests once (no watch)
+npm run test:ui          # Run tests with UI
+npm run test:coverage    # Run tests with coverage
+npm run test:watch       # Run tests in watch mode
+npm run test:accessibility  # Run accessibility tests
+npm run test:performance    # Run performance tests
+npm run test:integration    # Run integration tests
+```
+
+---
+
+## Project Structure
+
+```
+yeti-verse-connector-hub/
+├── src/
+│   ├── components/            # React UI components
+│   ├── pages/                 # Page-level components
+│   ├── hooks/                 # Custom React hooks
+│   ├── lib/                   # Utility functions and helpers
+│   ├── integrations/          # Platform integrations & connectors
+│   ├── handlers/              # Data processing handlers
+│   ├── data/                  # Static data and configurations
+│   ├── types/                 # TypeScript type definitions
+│   ├── test/                  # Test suites (accessibility, performance, integration)
+│   ├── App.tsx                # Root App component
+│   ├── App.css                # App-level styles
+│   ├── main.tsx               # Application entry point
+│   ├── index.css              # Global styles (Tailwind)
+│   └── vite-env.d.ts          # Vite type definitions
+├── supabase/                  # Supabase migrations and configs
+├── scripts/                   # Build and utility scripts
+├── public/                    # Static assets
+├── netlify/                   # Netlify serverless functions
+├── netlify.toml               # Netlify configuration
+├── vercel.json                # Vercel configuration
+├── components.json            # shadcn/ui configuration
+├── tailwind.config.ts         # Tailwind configuration
+├── postcss.config.js          # PostCSS configuration
+├── vite.config.ts             # Vite configuration
+├── vitest.config.ts           # Vitest configuration
+├── tsconfig.json              # TypeScript base config
+├── tsconfig.app.json          # App TypeScript config
+├── tsconfig.node.json         # Node TypeScript config
+├── eslint.config.js           # ESLint configuration
+├── index.html                 # HTML entry point
+├── dev.nix                    # Nix development environment
+├── fix-build.patch            # Build fix patch
+├── .env.example               # Environment variable template
+├── package.json               # Dependencies and scripts
+├── YETI_AI_SETUP_GUIDE.md     # Setup guide
+├── YETI_AI_ANALYSIS_REPORT.md # Analysis report
+└── README.md                  # This file
+```
+
+---
+
+## Deployment
+
+### Vercel
+
+```bash
+# Connect your repo to Vercel and deploy automatically
+vercel deploy
+```
+
+### Netlify
+
+```bash
+# Build and deploy to Netlify
+npm run build
+netlify deploy --prod
+```
+
+### Environment Variables
+
+Required environment variables (see `.env.example`):
+
+- `VITE_SUPABASE_URL` — Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` — Supabase anonymous key
+- `VITE_CLERK_PUBLISHABLE_KEY` — Clerk publishable key
+
+---
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes and add tests
+4. Run `npm run lint` and `npm run test:run`
+5. Submit a pull request
+
+---
+
+## Setup Guide & Documentation
+
+- [Yeti AI Setup Guide](YETI_AI_SETUP_GUIDE.md)
+- [Yeti AI Analysis Report](YETI_AI_ANALYSIS_REPORT.md)
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+<div align="center">
+
+**[YetiVerse Connector Hub](https://github.com/yethikrishna/yeti-verse-connector-hub)** — Connect your AI universe.
+
+[Get Started](#quick-start) · [Report Bug](https://github.com/yethikrishna/yeti-verse-connector-hub/issues) · [Request Feature](https://github.com/yethikrishna/yeti-verse-connector-hub/issues)
+
+</div>
